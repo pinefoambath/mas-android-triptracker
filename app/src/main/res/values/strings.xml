@@ -1,3 +1,9 @@
 <resources>
-    <string name="app_name">Triptracker</string>
+    <string name="app_name">TripTracker</string>
+    <string name="developer_team">Developer Team</string>
+    <string name="name1">⛵️ Andrea Kreideweiss</string>
+    <string name="email1">Andrea.Kreideweiss@ost.ch</string>
+    <string name="name2">⚓️ Regina Traber</string>
+    <string name="email2">Regina.Traber@ost.ch</string>
+    <string name="action_about">About us</string>
 </resources>
