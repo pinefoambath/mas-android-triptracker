@@ -57,7 +57,7 @@ public class MainActivity extends AppCompatActivity {
         }
         return false;
     }
-    
+
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -74,7 +74,7 @@ public class MainActivity extends AppCompatActivity {
             onBackPressed();
             return true;
         } else if (id == R.id.action_about) {
-            getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+            Objects.requireNonNull(getSupportActionBar()).setDisplayHomeAsUpEnabled(true);
 
             getSupportFragmentManager().beginTransaction()
                     .replace(R.id.fragment_container, new AboutFragment())
