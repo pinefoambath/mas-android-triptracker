@@ -22,7 +22,7 @@ public class MainActivity extends AppCompatActivity {
         setSupportActionBar(toolbar);
 
         if (shouldBeBackArrowVisible()) {
-            final Drawable upArrow = ContextCompat.getDrawable(this, R.drawable.pfeil);
+            final Drawable upArrow = ContextCompat.getDrawable(this, R.drawable.arrow);
             if (upArrow != null) {
                 Objects.requireNonNull(getSupportActionBar()).setHomeAsUpIndicator(upArrow);
                 getSupportActionBar().setDisplayHomeAsUpEnabled(true);
@@ -43,7 +43,7 @@ public class MainActivity extends AppCompatActivity {
         if (getSupportActionBar() != null) {
             getSupportActionBar().setDisplayHomeAsUpEnabled(shouldShowBackArrow);
             if (shouldShowBackArrow) {
-                final Drawable upArrow = ContextCompat.getDrawable(this, R.drawable.pfeil);
+                final Drawable upArrow = ContextCompat.getDrawable(this, R.drawable.arrow);
                 getSupportActionBar().setHomeAsUpIndicator(upArrow);
             }
         }
