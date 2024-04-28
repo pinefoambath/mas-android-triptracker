@@ -67,7 +67,7 @@ public class TrackingFragment extends Fragment {
         formInstructions.setVisibility(View.VISIBLE);
         tripNotes.setVisibility(View.VISIBLE);
         submitButton.setVisibility(View.VISIBLE);
-        Toast.makeText(requireContext(), "Trip Finished", Toast.LENGTH_SHORT).show();
+        Toast.makeText(requireContext(), getString(R.string.trip_finished), Toast.LENGTH_SHORT).show();
     }
 
     private void submitTrip() {
