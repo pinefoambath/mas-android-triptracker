@@ -1,4 +1,5 @@
 <resources>
+    <!-- general -->
     <string name="app_name">TripTracker ⛵️</string>
     <string name="developer_team">Developer Team</string>
     <string name="name1">⛵️ Andrea Kreideweiss</string>
@@ -7,12 +8,13 @@
     <string name="email2">Regina.Traber@ost.ch</string>
     <string name="action_about">About us</string>
     <string name="welcome_to_triptracker_landing">Welcome to TripTracker. To track a trip, click the button:</string>
+    <!-- UI interaction -->
     <string name="start_tracking">Start Tracking</string>
     <string name="tracking">Now tracking!</string>
-    <string name="your_notes">Write down some notes:</string>
-    <string name="trip_finished">Tracking stopped</string>
-    <string name="submit_trip">Submit Trip</string>
-    <string name="fill_in_trip_details">Notes from your trip:</string>
     <string name="stop_tracking">Stop tracking</string>
+    <string name="trip_finished">Tracking stopped</string>
+    <string name="your_notes">Write down some notes:</string>
+    <string name="fill_in_trip_details">Notes from your trip:</string>
+    <string name="submit_trip">Submit Trip</string>
     <string name="trip_submitted">Trip Submitted</string>
 </resources>
