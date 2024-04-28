@@ -22,4 +22,24 @@
         android:textSize="20sp"
         android:layout_marginTop="24dp" />
 
+    <LinearLayout
+        android:id="@+id/tripFinishedForm"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:visibility="gone"
+        android:padding="16dp">
+
+        <EditText
+            android:id="@+id/tripNotes"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="@string/your_notes" />
+
+        <Button
+            android:id="@+id/submitButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/submit_trip" />
+    </LinearLayout>
 </LinearLayout>

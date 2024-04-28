@@ -8,6 +8,8 @@
     <string name="action_about">About us</string>
     <string name="welcome_to_triptracker_landing">Welcome to TripTracker. To track a trip, click the button:</string>
     <string name="start_tracking">Start Tracking</string>
-    <string name="tracking">Tracking...</string>
-
+    <string name="tracking">Now tracking!</string>
+    <string name="your_notes">Write down some notes:</string>
+    <string name="trip_finished">Tracking stopped</string>
+    <string name="submit_trip">Submit Trip</string>
 </resources>
