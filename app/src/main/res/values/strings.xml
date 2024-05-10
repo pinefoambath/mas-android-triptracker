@@ -23,7 +23,6 @@
     <string name="tracking">Now tracking...↺</string>
     <string name="stop_tracking">Stop tracking</string>
     <string name="trip_finished">Tracking stopped</string>
-    <string name="your_notes">Write down some notes:</string>
     <string name="fill_in_trip_details">Notes from your trip:</string>
     <string name="submit_trip">Submit trip</string>
     <string name="trip_submitted">Trip submitted</string>
