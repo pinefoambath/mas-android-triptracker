@@ -13,7 +13,7 @@
         android:textStyle="bold"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        android:paddingBottom="24dp" />
+        android:paddingBottom="8dp" />
 
     <TextView
         android:id="@+id/withPrecision"
@@ -30,7 +30,7 @@
         android:text="@string/gps_tracking"
         app:layout_constraintTop_toBottomOf="@id/withPrecision"
         app:layout_constraintStart_toStartOf="parent" />
-    
+
     <TextView
         android:id="@+id/quickNotes"
         android:layout_width="wrap_content"
@@ -39,7 +39,7 @@
         app:layout_constraintTop_toBottomOf="@id/gpsTracking"
         app:layout_constraintStart_toStartOf="parent" />
 
-     <TextView
+    <TextView
         android:id="@+id/aiEnrichedLogs"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -47,7 +47,7 @@
         app:layout_constraintTop_toBottomOf="@id/quickNotes"
         app:layout_constraintStart_toStartOf="parent" />
 
-     <TextView
+    <TextView
         android:id="@+id/editAnytime"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -64,7 +64,7 @@
         android:textStyle="bold"
         app:layout_constraintTop_toBottomOf="@id/editAnytime"
         app:layout_constraintStart_toStartOf="parent"
-        android:paddingBottom="24dp" />
+        android:paddingBottom="8dp" />
 
     <TextView
         android:id="@+id/name1"
@@ -82,7 +82,7 @@
         android:text="@string/email1"
         app:layout_constraintTop_toBottomOf="@id/name1"
         app:layout_constraintStart_toStartOf="parent"
-        android:paddingBottom="16dp" />
+        android:paddingBottom="8dp" />
 
     <TextView
         android:id="@+id/name2"
@@ -100,6 +100,26 @@
         android:text="@string/email2"
         app:layout_constraintTop_toBottomOf="@id/name2"
         app:layout_constraintStart_toStartOf="parent"
-        android:paddingBottom="16dp" />
+        android:paddingBottom="24dp" />
+
+
+    <TextView
+        android:id="@+id/appVersion"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/app_version"
+        android:textStyle="bold"
+        app:layout_constraintTop_toBottomOf="@id/email2"
+        app:layout_constraintStart_toStartOf="parent"
+        android:paddingBottom="8dp" />
+
+
+    <TextView
+        android:id="@+id/appVersionNumber"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/app_version_number"
+        app:layout_constraintTop_toBottomOf="@id/appVersion"
+        app:layout_constraintStart_toStartOf="parent" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
