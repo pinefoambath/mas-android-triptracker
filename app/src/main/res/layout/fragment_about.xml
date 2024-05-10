@@ -102,7 +102,6 @@
         app:layout_constraintStart_toStartOf="parent"
         android:paddingBottom="24dp" />
 
-
     <TextView
         android:id="@+id/appVersion"
         android:layout_width="wrap_content"
@@ -113,13 +112,21 @@
         app:layout_constraintStart_toStartOf="parent"
         android:paddingBottom="8dp" />
 
-
     <TextView
         android:id="@+id/appVersionNumber"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/app_version_number"
         app:layout_constraintTop_toBottomOf="@id/appVersion"
+        app:layout_constraintStart_toStartOf="parent"
+        android:paddingBottom="24dp" />
+
+    <TextView
+        android:id="@+id/allRightsReserved"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/all_rights_reserved"
+        app:layout_constraintTop_toBottomOf="@id/appVersionNumber"
         app:layout_constraintStart_toStartOf="parent" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

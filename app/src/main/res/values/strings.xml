@@ -10,6 +10,8 @@
     <string name="email2">Regina.Traber@ost.ch</string>
     <string name="app_version">App Version</string>
     <string name="app_version_number">0.1</string>
+    <string name="copyright">Copyright</string>
+    <string name="all_rights_reserved">© 2024, all rights reserved</string>
     <string name="with_precision">⛵️ Set Sail with Precision: Your Ultimate Sailing Companion App!</string>
     <string name="gps_tracking">📍 GPS-Tracking: Seamlessly track your sailing journey from start to finish.</string>
     <string name="quick_notes">📝 Quick Notes: Bullet points let you jot down key moments on the go.</string>
@@ -26,4 +28,5 @@
     <string name="submit_trip">Submit Trip</string>
     <string name="trip_submitted">Trip Submitted</string>
     <string name="action_about">About us</string>
+    <string name="test">Test</string>
 </resources>
