@@ -28,7 +28,6 @@
         android:id="@+id/tripNotes"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:hint="@string/your_notes"
         android:layout_marginTop="16dp"
         android:visibility="gone" />
 
@@ -38,6 +37,7 @@
         android:layout_height="wrap_content"
         android:text="@string/submit_trip"
         android:layout_marginTop="16dp"
+        android:textSize="20sp"
         android:visibility="gone" />
 
     <Button
