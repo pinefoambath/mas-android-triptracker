@@ -14,6 +14,9 @@ import androidx.annotation.Nullable;
 import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 
+import com.massoftwareengineering.triptracker.network.TripBaseInformation;
+import com.massoftwareengineering.triptracker.utils.JsonUtils;
+
 public class TrackingFragment extends Fragment {
 
     private Button startTrackingButton, submitButton;
@@ -31,6 +34,8 @@ public class TrackingFragment extends Fragment {
         welcomeText = rootView.findViewById(R.id.welcomeText);
         formInstructions = rootView.findViewById(R.id.formInstructions);
         tripNotes = rootView.findViewById(R.id.tripNotes);
+        String jsonRequestBody = JsonUtils.createJsonRequestBody(String.valueOf(tripNotes));
+
 
         startTrackingButton.setOnClickListener(v -> {
             if (!isTracking) {
@@ -71,16 +76,38 @@ public class TrackingFragment extends Fragment {
     }
 
     private void submitTrip() {
-        // TODO: make POST call to .NET backend with track and notes data
+        String notes = tripNotes.getText().toString();
+        TripBaseInformation tripInfo = new TripBaseInformation(notes);
 
-        tripNotes.setText("");
-        formInstructions.setVisibility(View.GONE);
-        tripNotes.setVisibility(View.GONE);
-        submitButton.setVisibility(View.GONE);
-        welcomeText.setVisibility(View.VISIBLE);
-        startTrackingButton.setVisibility(View.VISIBLE);
+        ApiService apiService = RetrofitClient.getClient("http://192.168.x.x:5281/").create(ApiService.class); // Replace with your actual IP address
+        Call<Void> call = apiService.postTripBaseInformation(tripInfo);
+        call.enqueue(new Callback<Void>() {
+            @Override
+            public void onResponse(Call<Void> call, retrofit2.Response<Void> response) {
+                if (response.isSuccessful()) {
+                    Toast.makeText(requireContext(), getString(R.string.trip_submitted), Toast.LENGTH_SHORT).show();
+                } else {
+                    Toast.makeText(requireContext(), "Submission failed: " + response.code(), Toast.LENGTH_SHORT).show();
+                }
 
-        Toast.makeText(requireContext(), getString(R.string.trip_submitted), Toast.LENGTH_SHORT).show();
+                resetUI();
+            }
 
+            @Override
+            public void onFailure(Call<Void> call, Throwable t) {
+                Toast.makeText(requireContext(), "Network error: " + t.getMessage(), Toast.LENGTH_SHORT).show();
+                resetUI();
+            }
+        });
     }
+
+    private void resetUI() {
+        tripNotes.setText("");
+        formInstructions.setVisibility(View.VISIBLE);
+        tripNotes.setVisibility(View.VISIBLE);
+        submitButton.setVisibility(View.VISIBLE);
+        welcomeText.setVisibility(View.GONE);
+        startTrackingButton.setVisibility(View.VISIBLE);
+    }
+
 }
