@@ -27,4 +27,8 @@
     <string name="submit_trip">Submit trip</string>
     <string name="trip_submitted">Trip submitted</string>
     <string name="action_about">About us</string>
+    <string name="enter_notes">Please enter some notes</string>
+    <!-- Error messages -->
+    <string name="submit_failed">Failed to submit trip. Response code: %1$d Message: %2$s</string>
+    <string name="error_occurred">An error occurred: %1$s</string>
 </resources>
