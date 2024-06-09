@@ -80,9 +80,8 @@ public class TrackingFragment extends Fragment {
 
         // Create dummy GPS data
         List<GPSData> gpsData = new ArrayList<>();
-        gpsData.add(new GPSData(37.7749, -122.4194, "2024-06-08T19:36:21.82"));
-        gpsData.add(new GPSData(34.0522, -118.2437, "2024-06-08T19:36:21.82"));
-
+        gpsData.add(new GPSData(47.8374, -4.1641, "2024-06-08T19:36:21.01"));
+        gpsData.add(new GPSData(47.8360, -4.1675, "2024-06-08T19:38:28.02"));
         tripRepository.submitTrip(notes, gpsData, new TripRepository.TripCallback() {
             @Override
             public void onSuccess() {
