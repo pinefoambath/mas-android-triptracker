@@ -15,10 +15,10 @@ import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.*;
 
-import com.massoftwareengineering.triptracker.network.GPSData;
-import com.massoftwareengineering.triptracker.network.TripRepository;
-import com.massoftwareengineering.triptracker.network.TripRequest;
-import com.massoftwareengineering.triptracker.network.TripService;
+import com.massoftwareengineering.triptracker.data.model.GPSData;
+import com.massoftwareengineering.triptracker.data.repository.TripRepository;
+import com.massoftwareengineering.triptracker.data.model.TripRequest;
+import com.massoftwareengineering.triptracker.data.repository.TripService;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -41,7 +41,7 @@ public class TripRepositoryTest {
     public void setUp() {
         MockitoAnnotations.openMocks(this);
         tripRepository = new TripRepository(tripService);
-        
+
         dummyGpsData = new ArrayList<>();
         dummyGpsData.add(new GPSData(37.7749, -122.4194, "2024-06-08T19:36:21.82"));
         dummyGpsData.add(new GPSData(34.0522, -118.2437, "2024-06-08T19:36:21.82"));

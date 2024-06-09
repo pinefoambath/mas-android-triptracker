@@ -1,5 +1,7 @@
-package com.massoftwareengineering.triptracker;
+package com.massoftwareengineering.triptracker.ui;
 
+import android.Manifest;
+import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -11,30 +13,48 @@ import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
+import androidx.lifecycle.ViewModelProvider;
 
-import com.massoftwareengineering.triptracker.network.GPSData;
-import com.massoftwareengineering.triptracker.network.TripRepository;
-
-import java.util.ArrayList;
-import java.util.List;
+import com.google.android.gms.location.FusedLocationProviderClient;
+import com.google.android.gms.location.LocationCallback;
+import com.google.android.gms.location.LocationRequest;
+import com.google.android.gms.location.LocationResult;
+import com.google.android.gms.location.LocationServices;
+import com.massoftwareengineering.triptracker.R;
+import com.massoftwareengineering.triptracker.data.model.GPSData;
+import com.massoftwareengineering.triptracker.data.repository.TripRepository;
 
 public class TrackingFragment extends Fragment {
+
+    private static final int LOCATION_PERMISSION_REQUEST_CODE = 1;
 
     private Button startTrackingButton, submitButton;
     private EditText tripNotes;
     private TextView welcomeText, formInstructions;
-    private boolean isTracking = false;
-    private TripRepository tripRepository;
+    private TripViewModel tripViewModel;
+    private FusedLocationProviderClient fusedLocationClient;
+    private LocationCallback locationCallback;
 
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.fragment_tracking, container, false);
         initViews(rootView);
+        tripViewModel = new ViewModelProvider(this).get(TripViewModel.class);
         setListeners();
-        tripRepository = new TripRepository();
+        fusedLocationClient = LocationServices.getFusedLocationProviderClient(requireContext());
+
+        tripViewModel.getIsTracking().observe(getViewLifecycleOwner(), isTracking -> {
+            if (isTracking) {
+                updateUIForTracking();
+            } else {
+                updateUIForTrackingStopped();
+            }
+        });
+
         return rootView;
     }
 
@@ -48,10 +68,10 @@ public class TrackingFragment extends Fragment {
 
     private void setListeners() {
         startTrackingButton.setOnClickListener(v -> {
-            if (!isTracking) {
+            if (tripViewModel.getIsTracking().getValue() == Boolean.FALSE) {
                 startTracking();
             } else {
-                finishTracking();
+                stopTracking();
             }
         });
 
@@ -59,16 +79,46 @@ public class TrackingFragment extends Fragment {
     }
 
     private void startTracking() {
-        // TODO: start GPS tracking service
-        isTracking = true;
-        updateUIForTracking();
+        if (ContextCompat.checkSelfPermission(requireContext(), Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+            ActivityCompat.requestPermissions(requireActivity(), new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, LOCATION_PERMISSION_REQUEST_CODE);
+        } else {
+            tripViewModel.startTracking();
+            startLocationUpdates();
+        }
     }
 
-    private void finishTracking() {
-        // TODO: stop GPS tracking service
-        isTracking = false;
-        updateUIForTrackingStopped();
+    private void stopTracking() {
+        tripViewModel.stopTracking();
+        stopLocationUpdates();
         showToast(getString(R.string.trip_finished));
+    }
+
+    private void startLocationUpdates() {
+        LocationRequest locationRequest = LocationRequest.create();
+        locationRequest.setInterval(10000); // 10 seconds
+        locationRequest.setFastestInterval(5000); // 5 seconds
+        locationRequest.setPriority(LocationRequest.PRIORITY_HIGH_ACCURACY);
+
+        locationCallback = new LocationCallback() {
+            @Override
+            public void onLocationResult(LocationResult locationResult) {
+                if (locationResult == null) {
+                    return;
+                }
+                for (android.location.Location location : locationResult.getLocations()) {
+                    GPSData gpsData = new GPSData(location.getLatitude(), location.getLongitude(), java.time.Instant.ofEpochMilli(location.getTime()).toString());
+                    tripViewModel.addGPSData(gpsData);
+                }
+            }
+        };
+
+        fusedLocationClient.requestLocationUpdates(locationRequest, locationCallback, null);
+    }
+
+    private void stopLocationUpdates() {
+        if (locationCallback != null) {
+            fusedLocationClient.removeLocationUpdates(locationCallback);
+        }
     }
 
     private void submitTrip() {
@@ -78,11 +128,7 @@ public class TrackingFragment extends Fragment {
             return;
         }
 
-        // Create dummy GPS data
-        List<GPSData> gpsData = new ArrayList<>();
-        gpsData.add(new GPSData(47.8374, -4.1641, "2024-06-08T19:36:21.01"));
-        gpsData.add(new GPSData(47.8360, -4.1675, "2024-06-08T19:38:28.02"));
-        tripRepository.submitTrip(notes, gpsData, new TripRepository.TripCallback() {
+        tripViewModel.submitTrip(notes, new TripRepository.TripCallback() {
             @Override
             public void onSuccess() {
                 resetForm();
@@ -132,4 +178,16 @@ public class TrackingFragment extends Fragment {
     private void showToast(String message) {
         Toast.makeText(requireContext(), message, Toast.LENGTH_SHORT).show();
     }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        if (requestCode == LOCATION_PERMISSION_REQUEST_CODE) {
+            if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                startTracking();
+            } else {
+                showToast(getString(R.string.permission_denied));
+            }
+        }
+    }
 }
+

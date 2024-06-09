@@ -1,4 +1,4 @@
-package com.massoftwareengineering.triptracker;
+package com.massoftwareengineering.triptracker.ui;
 
 import android.os.Bundle;
 
@@ -7,6 +7,8 @@ import androidx.fragment.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+
+import com.massoftwareengineering.triptracker.R;
 
 public class AboutFragment extends Fragment {
     @Override
