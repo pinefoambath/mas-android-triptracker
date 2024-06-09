@@ -16,7 +16,7 @@ public class TripViewModel extends ViewModel {
     private MutableLiveData<List<GPSData>> gpsDataList = new MutableLiveData<>(new ArrayList<>());
 
     public TripViewModel() {
-        tripRepository = new TripRepository();
+        this.tripRepository = new TripRepository(); 
     }
 
     public LiveData<Boolean> getIsTracking() {
@@ -29,12 +29,10 @@ public class TripViewModel extends ViewModel {
 
     public void startTracking() {
         isTracking.setValue(true);
-        // Start GPS tracking logic
     }
 
     public void stopTracking() {
         isTracking.setValue(false);
-        // Stop GPS tracking logic
     }
 
     public void addGPSData(GPSData gpsData) {
@@ -45,7 +43,16 @@ public class TripViewModel extends ViewModel {
         }
     }
 
+    public void clearGPSData() {
+        gpsDataList.setValue(new ArrayList<>());
+    }
+
     public void submitTrip(String notes, TripRepository.TripCallback callback) {
-        tripRepository.submitTrip(notes, gpsDataList.getValue(), callback);
+        List<GPSData> gpsData = gpsDataList.getValue();
+        if (gpsData != null && tripRepository != null) {
+            tripRepository.submitTrip(notes, gpsData, callback);
+        } else {
+            callback.onError(new Throwable("GPS data or TripRepository is null"));
+        }
     }
 }
