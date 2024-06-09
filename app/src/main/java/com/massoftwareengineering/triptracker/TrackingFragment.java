@@ -14,7 +14,11 @@ import androidx.annotation.Nullable;
 import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 
+import com.massoftwareengineering.triptracker.network.GPSData;
 import com.massoftwareengineering.triptracker.network.TripRepository;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class TrackingFragment extends Fragment {
 
@@ -74,7 +78,12 @@ public class TrackingFragment extends Fragment {
             return;
         }
 
-        tripRepository.submitTrip(notes, new TripRepository.TripCallback() {
+        // Create dummy GPS data
+        List<GPSData> gpsData = new ArrayList<>();
+        gpsData.add(new GPSData(37.7749, -122.4194, "2024-06-08T19:36:21.82"));
+        gpsData.add(new GPSData(34.0522, -118.2437, "2024-06-08T19:36:21.82"));
+
+        tripRepository.submitTrip(notes, gpsData, new TripRepository.TripCallback() {
             @Override
             public void onSuccess() {
                 resetForm();
