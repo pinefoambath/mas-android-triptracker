@@ -131,6 +131,7 @@ public class TrackingFragment extends Fragment {
         tripViewModel.submitTrip(notes, new TripRepository.TripCallback() {
             @Override
             public void onSuccess() {
+                tripViewModel.clearGPSData();
                 resetForm();
                 showToast(getString(R.string.trip_submitted));
             }
