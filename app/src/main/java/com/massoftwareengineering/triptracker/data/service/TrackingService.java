@@ -78,8 +78,8 @@ public class TrackingService extends Service {
 
     private void startLocationUpdates() {
         LocationRequest locationRequest = LocationRequest.create();
-        locationRequest.setInterval(10000); // 10 seconds
-        locationRequest.setFastestInterval(5000); // 5 seconds
+        locationRequest.setInterval(20000);
+        locationRequest.setFastestInterval(10000);
         locationRequest.setPriority(LocationRequest.PRIORITY_HIGH_ACCURACY);
 
         fusedLocationClient.requestLocationUpdates(locationRequest, locationCallback, null);
