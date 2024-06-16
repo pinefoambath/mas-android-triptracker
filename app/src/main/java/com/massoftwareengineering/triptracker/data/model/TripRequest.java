@@ -13,7 +13,6 @@ public class TripRequest {
         this.gpsData = gpsData;
     }
 
-    // Getters and Setters
     public String getNotes() {
         return notes;
     }

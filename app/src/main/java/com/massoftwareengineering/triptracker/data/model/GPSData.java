@@ -11,7 +11,6 @@ public class GPSData {
         this.timestamp = timestamp;
     }
 
-    // Getters and Setters
     public double getLatitude() {
         return latitude;
     }
