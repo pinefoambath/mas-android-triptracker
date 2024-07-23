@@ -62,6 +62,7 @@ public class TrackingService extends Service {
         Intent notificationIntent = new Intent(this, MainActivity.class);
         PendingIntent pendingIntent = PendingIntent.getActivity(this, 0, notificationIntent, PendingIntent.FLAG_IMMUTABLE);
 
+        // TODO: this is not showing the notification, need to check this
         Notification notification = new NotificationCompat.Builder(this, CHANNEL_ID)
                 .setContentTitle("Tracking Service")
                 .setContentText(input)
