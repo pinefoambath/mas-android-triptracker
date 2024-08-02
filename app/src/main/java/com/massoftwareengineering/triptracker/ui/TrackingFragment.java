@@ -7,6 +7,7 @@ import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -46,12 +47,13 @@ public class TrackingFragment extends Fragment {
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.fragment_tracking, container, false);
         initViews(rootView);
+        resetForm();
         tripViewModel = new ViewModelProvider(this).get(TripViewModel.class);
         setListeners();
         fusedLocationClient = LocationServices.getFusedLocationProviderClient(requireContext());
 
         tripViewModel.getIsTracking().observe(getViewLifecycleOwner(), isTracking -> {
-            if (isTracking) {
+            if (isTracking != null && isTracking) {
                 updateUIForTracking();
             } else {
                 updateUIForTrackingStopped();
@@ -73,6 +75,12 @@ public class TrackingFragment extends Fragment {
                 new IntentFilter(TrackingService.ACTION_LOCATION_BROADCAST));
 
         return rootView;
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        resetForm();
     }
 
     @Override
@@ -98,25 +106,24 @@ public class TrackingFragment extends Fragment {
             }
         });
 
-        submitButton.setOnClickListener(v -> submitTrip());
+        submitButton.setOnClickListener(v -> {
+            submitTrip();
+        });
     }
 
     private void startTracking() {
         if (ContextCompat.checkSelfPermission(requireContext(), Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED ||
-                ContextCompat.checkSelfPermission(requireContext(), Manifest.permission.FOREGROUND_SERVICE) != PackageManager.PERMISSION_GRANTED ||
-                ContextCompat.checkSelfPermission(requireContext(), Manifest.permission.FOREGROUND_SERVICE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
-
+                ContextCompat.checkSelfPermission(requireContext(), Manifest.permission.FOREGROUND_SERVICE) != PackageManager.PERMISSION_GRANTED) {
             ActivityCompat.requestPermissions(requireActivity(), new String[]{
                     Manifest.permission.ACCESS_FINE_LOCATION,
                     Manifest.permission.FOREGROUND_SERVICE,
-                    Manifest.permission.FOREGROUND_SERVICE_LOCATION
+                    Manifest.permission.ACCESS_COARSE_LOCATION
             }, LOCATION_PERMISSION_REQUEST_CODE);
         } else {
             tripViewModel.startTracking();
             startTrackingService();
         }
     }
-
 
     private void stopTracking() {
         tripViewModel.stopTracking();
@@ -171,6 +178,7 @@ public class TrackingFragment extends Fragment {
         submitButton.setVisibility(View.GONE);
         welcomeText.setVisibility(View.VISIBLE);
         startTrackingButton.setVisibility(View.VISIBLE);
+        startTrackingButton.setText(R.string.start_tracking);
     }
 
     private void updateUIForTracking() {
@@ -183,8 +191,7 @@ public class TrackingFragment extends Fragment {
     }
 
     private void updateUIForTrackingStopped() {
-        startTrackingButton.setText(R.string.start_tracking);
-        startTrackingButton.setBackgroundColor(ContextCompat.getColor(requireContext(), R.color.default_button));
+        startTrackingButton.setVisibility(View.GONE);
         formInstructions.setVisibility(View.VISIBLE);
         tripNotes.setVisibility(View.VISIBLE);
         submitButton.setVisibility(View.VISIBLE);
@@ -194,6 +201,7 @@ public class TrackingFragment extends Fragment {
         Toast.makeText(requireContext(), message, Toast.LENGTH_SHORT).show();
     }
 
+    @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
         if (requestCode == LOCATION_PERMISSION_REQUEST_CODE) {
             if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
@@ -204,3 +212,5 @@ public class TrackingFragment extends Fragment {
         }
     }
 }
+
+

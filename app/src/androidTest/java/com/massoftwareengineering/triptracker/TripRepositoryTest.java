@@ -43,8 +43,8 @@ public class TripRepositoryTest {
         tripRepository = new TripRepository(tripService);
 
         dummyGpsData = new ArrayList<>();
-        dummyGpsData.add(new GPSData(37.7749, -122.4194, "2024-06-08T19:36:21.82"));
-        dummyGpsData.add(new GPSData(34.0522, -118.2437, "2024-06-08T19:36:21.82"));
+        dummyGpsData.add(new GPSData(47.2245, 8.88184, "2024-06-08T19:36:21.82"));
+        dummyGpsData.add(new GPSData(47.2200, 8.88000, "2024-06-08T19:36:21.82"));
     }
 
     @Test

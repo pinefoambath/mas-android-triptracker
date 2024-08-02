@@ -1,5 +1,7 @@
 package com.massoftwareengineering.triptracker.ui;
 
+import android.util.Log;
+
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
@@ -16,15 +18,11 @@ public class TripViewModel extends ViewModel {
     private MutableLiveData<List<GPSData>> gpsDataList = new MutableLiveData<>(new ArrayList<>());
 
     public TripViewModel() {
-        this.tripRepository = new TripRepository(); 
+        tripRepository = new TripRepository();
     }
 
     public LiveData<Boolean> getIsTracking() {
         return isTracking;
-    }
-
-    public LiveData<List<GPSData>> getGpsDataList() {
-        return gpsDataList;
     }
 
     public void startTracking() {
@@ -40,6 +38,8 @@ public class TripViewModel extends ViewModel {
         if (currentData != null) {
             currentData.add(gpsData);
             gpsDataList.setValue(currentData);
+        } else {
+            Log.e("TripViewModel", "GPS data list is null");
         }
     }
 
@@ -56,3 +56,8 @@ public class TripViewModel extends ViewModel {
         }
     }
 }
+
+
+
+
+
