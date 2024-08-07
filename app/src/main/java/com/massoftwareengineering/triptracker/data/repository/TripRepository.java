@@ -1,8 +1,14 @@
-package com.massoftwareengineering.triptracker.network;
+package com.massoftwareengineering.triptracker.data.repository;
+
+import com.massoftwareengineering.triptracker.data.model.GPSData;
+import com.massoftwareengineering.triptracker.data.model.TripRequest;
+import com.massoftwareengineering.triptracker.data.network.RetrofitClient;
 
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
+
+import java.util.List;
 
 public class TripRepository {
 
@@ -17,8 +23,8 @@ public class TripRepository {
         this.tripService = tripService;
     }
 
-    public void submitTrip(String notes, final TripCallback callback) {
-        TripRequest tripRequest = new TripRequest(notes);
+    public void submitTrip(String notes, List<GPSData> gpsData, final TripCallback callback) {
+        TripRequest tripRequest = new TripRequest(notes, gpsData);
         Call<Void> call = tripService.submitTrip(tripRequest);
         call.enqueue(new Callback<Void>() {
             @Override
@@ -45,5 +51,3 @@ public class TripRepository {
         void onError(Throwable t);
     }
 }
-
-

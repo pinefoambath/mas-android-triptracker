@@ -1,4 +1,6 @@
-package com.massoftwareengineering.triptracker.network;
+package com.massoftwareengineering.triptracker.data.network;
+
+import com.massoftwareengineering.triptracker.data.repository.TripService;
 
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;

@@ -1,4 +1,4 @@
-package com.massoftwareengineering.triptracker;
+package com.massoftwareengineering.triptracker.ui;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
@@ -10,6 +10,8 @@ import android.view.Menu;
 import android.view.MenuItem;
 
 import java.util.Objects;
+
+import com.massoftwareengineering.triptracker.R;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -33,7 +35,7 @@ public class MainActivity extends AppCompatActivity {
 
         if (savedInstanceState == null) {
             getSupportFragmentManager().beginTransaction()
-                    .add(R.id.fragment_container, new TrackingFragment())
+                    .add(R.id.fragment_container, new com.massoftwareengineering.triptracker.ui.TrackingFragment())
                     .commit();
         }
     }

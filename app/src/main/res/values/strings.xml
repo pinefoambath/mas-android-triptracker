@@ -31,4 +31,5 @@
     <!-- Error messages -->
     <string name="submit_failed">Failed to submit trip. Response code: %1$d Message: %2$s</string>
     <string name="error_occurred">An error occurred: %1$s</string>
+    <string name="permission_denied">Permission denied 🏴‍☠️</string>
 </resources>

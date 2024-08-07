@@ -15,9 +15,13 @@ import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.*;
 
-import com.massoftwareengineering.triptracker.network.TripRepository;
-import com.massoftwareengineering.triptracker.network.TripRequest;
-import com.massoftwareengineering.triptracker.network.TripService;
+import com.massoftwareengineering.triptracker.data.model.GPSData;
+import com.massoftwareengineering.triptracker.data.repository.TripRepository;
+import com.massoftwareengineering.triptracker.data.model.TripRequest;
+import com.massoftwareengineering.triptracker.data.repository.TripService;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class TripRepositoryTest {
 
@@ -31,11 +35,16 @@ public class TripRepositoryTest {
     private TripRepository.TripCallback mockCallback;
 
     private TripRepository tripRepository;
+    private List<GPSData> dummyGpsData;
 
     @Before
     public void setUp() {
         MockitoAnnotations.openMocks(this);
-        tripRepository = new TripRepository(tripService); 
+        tripRepository = new TripRepository(tripService);
+
+        dummyGpsData = new ArrayList<>();
+        dummyGpsData.add(new GPSData(47.2245, 8.88184, "2024-06-08T19:36:21.82"));
+        dummyGpsData.add(new GPSData(47.2200, 8.88000, "2024-06-08T19:36:21.82"));
     }
 
     @Test
@@ -47,8 +56,8 @@ public class TripRepositoryTest {
             return null;
         }).when(mockCall).enqueue(any());
 
-        tripRepository.submitTrip("Test notes", mockCallback);
-        // verify we're returning the onSuccess callback when we had a success response
+        tripRepository.submitTrip("Test notes", dummyGpsData, mockCallback);
+        // Verify we're returning the onSuccess callback when we had a success response
         verify(mockCallback).onSuccess();
     }
 
@@ -62,8 +71,8 @@ public class TripRepositoryTest {
             return null;
         }).when(mockCall).enqueue(any());
 
-        tripRepository.submitTrip("Test notes", mockCallback);
-        // verify we're returning the onError callback when we had a an error response
+        tripRepository.submitTrip("Test notes", dummyGpsData, mockCallback);
+        // Verify we're returning the onError callback when we had an error response
         verify(mockCallback).onError(eq(400), anyString());
     }
 
@@ -76,10 +85,9 @@ public class TripRepositoryTest {
             return null;
         }).when(mockCall).enqueue(any());
 
-        tripRepository.submitTrip("Test notes", mockCallback);
-        // verify we're returning the onError callback with a Throwable for the network error
+        tripRepository.submitTrip("Test notes", dummyGpsData, mockCallback);
+        // Verify we're returning the onError callback with a Throwable for the network error
         verify(mockCallback).onError(any(Throwable.class));
     }
 }
-
 

@@ -1,4 +1,6 @@
-package com.massoftwareengineering.triptracker.network;
+package com.massoftwareengineering.triptracker.data.repository;
+
+import com.massoftwareengineering.triptracker.data.model.TripRequest;
 
 import retrofit2.Call;
 import retrofit2.http.Body;
