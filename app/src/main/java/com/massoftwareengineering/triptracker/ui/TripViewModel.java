@@ -56,8 +56,3 @@ public class TripViewModel extends ViewModel {
         }
     }
 }
-
-
-
-
-
