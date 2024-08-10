@@ -55,4 +55,9 @@ public class TripViewModel extends ViewModel {
             callback.onError(new Throwable("GPS data or TripRepository is null"));
         }
     }
+
+    public boolean hasGPSData() {
+        List<GPSData> currentData = gpsDataList.getValue();
+        return currentData != null && !currentData.isEmpty();
+    }
 }
