@@ -25,6 +25,8 @@ import com.massoftwareengineering.triptracker.ui.MainActivity;
 public class TrackingService extends Service {
 
     private static final String CHANNEL_ID = "TrackingServiceChannel";
+    private static final int LOCATION_UPDATE_INTERVAL = 10000; // 10 seconds
+
     public static final String ACTION_LOCATION_BROADCAST = "TrackingServiceLocationBroadcast";
     public static final String EXTRA_LATITUDE = "extra_latitude";
     public static final String EXTRA_LONGITUDE = "extra_longitude";
@@ -61,7 +63,7 @@ public class TrackingService extends Service {
 
         Intent notificationIntent = new Intent(this, MainActivity.class);
         PendingIntent pendingIntent = PendingIntent.getActivity(this, 0, notificationIntent, PendingIntent.FLAG_IMMUTABLE);
-        
+
         Notification notification = new NotificationCompat.Builder(this, CHANNEL_ID)
                 .setContentTitle("Tracking Service")
                 .setContentText(input)
@@ -78,7 +80,7 @@ public class TrackingService extends Service {
 
     private void startLocationUpdates() {
         LocationRequest locationRequest = LocationRequest.create();
-        locationRequest.setInterval(300000); // 5 Minuten
+        locationRequest.setInterval(LOCATION_UPDATE_INTERVAL);
         locationRequest.setPriority(LocationRequest.PRIORITY_HIGH_ACCURACY);
 
         fusedLocationClient.requestLocationUpdates(locationRequest, locationCallback, null);
