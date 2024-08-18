@@ -183,7 +183,7 @@ public class TrackingFragment extends Fragment {
 
     private void updateUIForTracking() {
         startTrackingButton.setText(R.string.stop_tracking);
-        startTrackingButton.setBackgroundColor(ContextCompat.getColor(requireContext(), R.color.tracking_active));
+        startTrackingButton.setBackgroundColor(ContextCompat.getColor(requireContext(), R.color.secondaryColor));
         welcomeText.setVisibility(View.GONE);
         formInstructions.setVisibility(View.GONE);
         tripNotes.setVisibility(View.GONE);
