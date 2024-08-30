@@ -25,6 +25,7 @@ import com.massoftwareengineering.triptracker.ui.MainActivity;
 public class TrackingService extends Service {
 
     private static final String CHANNEL_ID = "TrackingServiceChannel";
+    private static final int LOCATION_UPDATE_INTERVAL = 600000; // 10 minutes
     public static final String ACTION_LOCATION_BROADCAST = "TrackingServiceLocationBroadcast";
     public static final String EXTRA_LATITUDE = "extra_latitude";
     public static final String EXTRA_LONGITUDE = "extra_longitude";
@@ -78,7 +79,7 @@ public class TrackingService extends Service {
 
     private void startLocationUpdates() {
         LocationRequest locationRequest = LocationRequest.create();
-        locationRequest.setInterval(300000); // 5 Minuten
+        locationRequest.setInterval(LOCATION_UPDATE_INTERVAL);
         locationRequest.setPriority(LocationRequest.PRIORITY_HIGH_ACCURACY);
 
         fusedLocationClient.requestLocationUpdates(locationRequest, locationCallback, null);
