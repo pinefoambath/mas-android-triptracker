@@ -43,7 +43,6 @@
 
     <Button
         android:id="@+id/startButton"
-        android:backgroundTint="@color/primaryColor"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/start_tracking"

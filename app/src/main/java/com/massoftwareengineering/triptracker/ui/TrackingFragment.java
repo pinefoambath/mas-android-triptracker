@@ -179,6 +179,8 @@ public class TrackingFragment extends Fragment {
         welcomeText.setVisibility(View.VISIBLE);
         startTrackingButton.setVisibility(View.VISIBLE);
         startTrackingButton.setText(R.string.start_tracking);
+        startTrackingButton.setBackgroundColor(ContextCompat.getColor(requireContext(), R.color.primaryColor));
+
     }
 
     private void updateUIForTracking() {
