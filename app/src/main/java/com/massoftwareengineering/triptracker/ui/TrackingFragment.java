@@ -17,6 +17,11 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import android.app.NotificationChannel;
+import android.app.NotificationManager;
+
+import androidx.core.app.NotificationCompat;
+
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.core.app.ActivityCompat;
@@ -36,6 +41,8 @@ public class TrackingFragment extends Fragment {
 
     private static final int LOCATION_PERMISSION_REQUEST_CODE = 1;
     private static final int NOTIFICATION_PERMISSION_REQUEST_CODE = 2;
+    private static final int TRACKING_NOTIFICATION_ID = 1001;
+    private static final String CHANNEL_ID = "TrackingNotificationChannel";
 
     private Button startTrackingButton, submitButton;
     private EditText tripNotes;
@@ -134,6 +141,37 @@ public class TrackingFragment extends Fragment {
         } else {
             tripViewModel.startTracking();
             startTrackingService();
+            showTrackingNotification();
+        }
+    }
+
+    private void showTrackingNotification() {
+        createNotificationChannel();
+
+        NotificationCompat.Builder builder = new NotificationCompat.Builder(requireContext(), CHANNEL_ID)
+                .setSmallIcon(R.drawable.notification_white)
+                .setContentTitle("Tracking Started")
+                .setContentText("Your trip tracking has started.")
+                .setPriority(NotificationCompat.PRIORITY_HIGH)
+                .setAutoCancel(true);
+
+        NotificationManager notificationManager = (NotificationManager) requireContext().getSystemService(Context.NOTIFICATION_SERVICE);
+        if (notificationManager != null) {
+            notificationManager.notify(TRACKING_NOTIFICATION_ID, builder.build());
+        }
+    }
+
+    private void createNotificationChannel() {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            CharSequence name = "Tracking Notification";
+            String description = "Notification when trip tracking starts";
+            int importance = NotificationManager.IMPORTANCE_HIGH;
+            NotificationChannel channel = new NotificationChannel(CHANNEL_ID, name, importance);
+            channel.setDescription(description);
+            NotificationManager notificationManager = requireContext().getSystemService(NotificationManager.class);
+            if (notificationManager != null) {
+                notificationManager.createNotificationChannel(channel);
+            }
         }
     }
 
@@ -141,6 +179,14 @@ public class TrackingFragment extends Fragment {
         tripViewModel.stopTracking();
         stopTrackingService();
         showToast(getString(R.string.trip_finished));
+        cancelTrackingNotification();
+    }
+
+    private void cancelTrackingNotification() {
+        NotificationManager notificationManager = (NotificationManager) requireContext().getSystemService(Context.NOTIFICATION_SERVICE);
+        if (notificationManager != null) {
+            notificationManager.cancel(TRACKING_NOTIFICATION_ID);
+        }
     }
 
     private void startTrackingService() {
