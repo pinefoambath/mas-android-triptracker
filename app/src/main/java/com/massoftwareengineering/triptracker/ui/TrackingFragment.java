@@ -6,6 +6,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.pm.PackageManager;
+import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -34,6 +35,7 @@ import com.massoftwareengineering.triptracker.data.service.TrackingService;
 public class TrackingFragment extends Fragment {
 
     private static final int LOCATION_PERMISSION_REQUEST_CODE = 1;
+    private static final int NOTIFICATION_PERMISSION_REQUEST_CODE = 2;
 
     private Button startTrackingButton, submitButton;
     private EditText tripNotes;
@@ -80,14 +82,14 @@ public class TrackingFragment extends Fragment {
     @Override
     public void onResume() {
         super.onResume();
-        
+
         Boolean isTracking = tripViewModel.getIsTracking().getValue();
         if (!tripViewModel.hasGPSData()) {
-            resetForm(); 
+            resetForm();
         } else if (Boolean.TRUE.equals(isTracking)) {
-            updateUIForTracking(); 
+            updateUIForTracking();
         } else {
-            updateUIForTrackingStopped(); 
+            updateUIForTrackingStopped();
         }
     }
 
@@ -120,6 +122,8 @@ public class TrackingFragment extends Fragment {
     }
 
     private void startTracking() {
+        requestNotificationPermission();
+
         if (ContextCompat.checkSelfPermission(requireContext(), Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED ||
                 ContextCompat.checkSelfPermission(requireContext(), Manifest.permission.FOREGROUND_SERVICE) != PackageManager.PERMISSION_GRANTED) {
             ActivityCompat.requestPermissions(requireActivity(), new String[]{
@@ -213,11 +217,27 @@ public class TrackingFragment extends Fragment {
 
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+
         if (requestCode == LOCATION_PERMISSION_REQUEST_CODE) {
             if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
                 startTracking();
             } else {
                 showToast(getString(R.string.permission_denied));
+            }
+        }
+
+        if (requestCode == NOTIFICATION_PERMISSION_REQUEST_CODE) {
+            if (grantResults.length > 0 && grantResults[0] != PackageManager.PERMISSION_GRANTED) {
+                showToast("Notifications are required for tracking.");
+            }
+        }
+    }
+
+    private void requestNotificationPermission() {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+            if (ContextCompat.checkSelfPermission(requireContext(), Manifest.permission.POST_NOTIFICATIONS) != PackageManager.PERMISSION_GRANTED) {
+                ActivityCompat.requestPermissions(requireActivity(), new String[]{Manifest.permission.POST_NOTIFICATIONS}, NOTIFICATION_PERMISSION_REQUEST_CODE);
             }
         }
     }

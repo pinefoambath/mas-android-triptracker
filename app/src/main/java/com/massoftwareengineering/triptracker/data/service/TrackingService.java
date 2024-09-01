@@ -62,19 +62,21 @@ public class TrackingService extends Service {
 
         Intent notificationIntent = new Intent(this, MainActivity.class);
         PendingIntent pendingIntent = PendingIntent.getActivity(this, 0, notificationIntent, PendingIntent.FLAG_IMMUTABLE);
-        
+
         Notification notification = new NotificationCompat.Builder(this, CHANNEL_ID)
                 .setContentTitle("Tracking Service")
                 .setContentText(input)
-                .setSmallIcon(R.drawable.arrow)
+                .setSmallIcon(R.drawable.notification_white)
                 .setContentIntent(pendingIntent)
+                .setPriority(NotificationCompat.PRIORITY_MAX)
+                .setOngoing(true)
                 .build();
 
         startForeground(1, notification);
 
         startLocationUpdates();
 
-        return START_NOT_STICKY;
+        return START_STICKY;
     }
 
     private void startLocationUpdates() {
@@ -105,7 +107,7 @@ public class TrackingService extends Service {
             NotificationChannel serviceChannel = new NotificationChannel(
                     CHANNEL_ID,
                     "Tracking Service Channel",
-                    NotificationManager.IMPORTANCE_DEFAULT
+                    NotificationManager.IMPORTANCE_HIGH
             );
             NotificationManager manager = getSystemService(NotificationManager.class);
             if (manager != null) {
