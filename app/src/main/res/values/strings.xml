@@ -21,6 +21,9 @@
     <string name="welcome_to_triptracker_landing">Welcome to TripTracker. To track a trip, click the button:</string>
     <string name="start_tracking">Start tracking</string>
     <string name="tracking">Now tracking...↺</string>
+    <string name="tracking_notification">Tracking notification</string>
+    <string name="notification_description">Notification when trip tracking starts.</string>
+    <string name="tracking_started">Tracking started.</string>
     <string name="stop_tracking">Tracking trip. Press button to stop.</string>
     <string name="trip_finished">Tracking stopped</string>
     <string name="fill_in_trip_details">Add notes to your trip:</string>

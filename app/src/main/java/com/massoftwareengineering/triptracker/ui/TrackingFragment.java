@@ -6,6 +6,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.pm.PackageManager;
+import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -15,6 +16,11 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import android.app.NotificationChannel;
+import android.app.NotificationManager;
+
+import androidx.core.app.NotificationCompat;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -34,6 +40,9 @@ import com.massoftwareengineering.triptracker.data.service.TrackingService;
 public class TrackingFragment extends Fragment {
 
     private static final int LOCATION_PERMISSION_REQUEST_CODE = 1;
+    private static final int NOTIFICATION_PERMISSION_REQUEST_CODE = 2;
+    private static final int TRACKING_NOTIFICATION_ID = 1001;
+    private static final String CHANNEL_ID = "TrackingNotificationChannel";
 
     private Button startTrackingButton, submitButton;
     private EditText tripNotes;
@@ -80,14 +89,14 @@ public class TrackingFragment extends Fragment {
     @Override
     public void onResume() {
         super.onResume();
-        
+
         Boolean isTracking = tripViewModel.getIsTracking().getValue();
         if (!tripViewModel.hasGPSData()) {
-            resetForm(); 
+            resetForm();
         } else if (Boolean.TRUE.equals(isTracking)) {
-            updateUIForTracking(); 
+            updateUIForTracking();
         } else {
-            updateUIForTrackingStopped(); 
+            updateUIForTrackingStopped();
         }
     }
 
@@ -120,6 +129,8 @@ public class TrackingFragment extends Fragment {
     }
 
     private void startTracking() {
+        requestNotificationPermission();
+
         if (ContextCompat.checkSelfPermission(requireContext(), Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED ||
                 ContextCompat.checkSelfPermission(requireContext(), Manifest.permission.FOREGROUND_SERVICE) != PackageManager.PERMISSION_GRANTED) {
             ActivityCompat.requestPermissions(requireActivity(), new String[]{
@@ -130,6 +141,37 @@ public class TrackingFragment extends Fragment {
         } else {
             tripViewModel.startTracking();
             startTrackingService();
+            showTrackingNotification();
+        }
+    }
+
+    private void showTrackingNotification() {
+        createNotificationChannel();
+
+        NotificationCompat.Builder builder = new NotificationCompat.Builder(requireContext(), CHANNEL_ID)
+                .setSmallIcon(R.drawable.notification_white)
+                .setContentTitle(getString(R.string.tracking_notification))
+                .setContentText(getString(R.string.tracking_started))
+                .setPriority(NotificationCompat.PRIORITY_HIGH)
+                .setAutoCancel(true);
+
+        NotificationManager notificationManager = (NotificationManager) requireContext().getSystemService(Context.NOTIFICATION_SERVICE);
+        if (notificationManager != null) {
+            notificationManager.notify(TRACKING_NOTIFICATION_ID, builder.build());
+        }
+    }
+
+    private void createNotificationChannel() {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            CharSequence name = getString(R.string.tracking_notification);
+            String description = getString(R.string.notification_description);
+            int importance = NotificationManager.IMPORTANCE_HIGH;
+            NotificationChannel channel = new NotificationChannel(CHANNEL_ID, name, importance);
+            channel.setDescription(description);
+            NotificationManager notificationManager = requireContext().getSystemService(NotificationManager.class);
+            if (notificationManager != null) {
+                notificationManager.createNotificationChannel(channel);
+            }
         }
     }
 
@@ -137,6 +179,14 @@ public class TrackingFragment extends Fragment {
         tripViewModel.stopTracking();
         stopTrackingService();
         showToast(getString(R.string.trip_finished));
+        cancelTrackingNotification();
+    }
+
+    private void cancelTrackingNotification() {
+        NotificationManager notificationManager = (NotificationManager) requireContext().getSystemService(Context.NOTIFICATION_SERVICE);
+        if (notificationManager != null) {
+            notificationManager.cancel(TRACKING_NOTIFICATION_ID);
+        }
     }
 
     private void startTrackingService() {
@@ -213,11 +263,27 @@ public class TrackingFragment extends Fragment {
 
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+
         if (requestCode == LOCATION_PERMISSION_REQUEST_CODE) {
             if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
                 startTracking();
             } else {
                 showToast(getString(R.string.permission_denied));
+            }
+        }
+
+        if (requestCode == NOTIFICATION_PERMISSION_REQUEST_CODE) {
+            if (grantResults.length > 0 && grantResults[0] != PackageManager.PERMISSION_GRANTED) {
+                showToast("Notifications are required for tracking.");
+            }
+        }
+    }
+
+    private void requestNotificationPermission() {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+            if (ContextCompat.checkSelfPermission(requireContext(), Manifest.permission.POST_NOTIFICATIONS) != PackageManager.PERMISSION_GRANTED) {
+                ActivityCompat.requestPermissions(requireActivity(), new String[]{Manifest.permission.POST_NOTIFICATIONS}, NOTIFICATION_PERMISSION_REQUEST_CODE);
             }
         }
     }
