@@ -150,8 +150,8 @@ public class TrackingFragment extends Fragment {
 
         NotificationCompat.Builder builder = new NotificationCompat.Builder(requireContext(), CHANNEL_ID)
                 .setSmallIcon(R.drawable.notification_white)
-                .setContentTitle("Tracking Started")
-                .setContentText("Your trip tracking has started.")
+                .setContentTitle(getString(R.string.tracking_notification))
+                .setContentText(getString(R.string.tracking_started))
                 .setPriority(NotificationCompat.PRIORITY_HIGH)
                 .setAutoCancel(true);
 
@@ -163,8 +163,8 @@ public class TrackingFragment extends Fragment {
 
     private void createNotificationChannel() {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-            CharSequence name = "Tracking Notification";
-            String description = "Notification when trip tracking starts";
+            CharSequence name = getString(R.string.tracking_notification);
+            String description = getString(R.string.notification_description);
             int importance = NotificationManager.IMPORTANCE_HIGH;
             NotificationChannel channel = new NotificationChannel(CHANNEL_ID, name, importance);
             channel.setDescription(description);
