@@ -12,7 +12,7 @@ import java.util.List;
 
 public class TripRepository {
 
-    private TripService tripService;
+    private final TripService tripService;
 
     public TripRepository() {
         tripService = RetrofitClient.getTripService();
