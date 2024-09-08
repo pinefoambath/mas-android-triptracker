@@ -1,13 +1,11 @@
 package com.massoftwareengineering.triptracker.data.service;
 
 import android.app.Notification;
-import android.app.NotificationChannel;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.app.Service;
 import android.content.Intent;
 import android.location.Location;
-import android.os.Build;
 import android.os.IBinder;
 
 import androidx.annotation.NonNull;
@@ -21,6 +19,7 @@ import com.google.android.gms.location.LocationResult;
 import com.google.android.gms.location.LocationServices;
 import com.massoftwareengineering.triptracker.R;
 import com.massoftwareengineering.triptracker.ui.MainActivity;
+import com.massoftwareengineering.triptracker.utils.NotificationUtils;
 
 public class TrackingService extends Service {
 
@@ -37,7 +36,15 @@ public class TrackingService extends Service {
     @Override
     public void onCreate() {
         super.onCreate();
-        createNotificationChannel();
+
+        NotificationUtils.createNotificationChannel(
+                this,
+                CHANNEL_ID,
+                getString(R.string.tracking_service_channel_name),
+                getString(R.string.tracking_service_channel_description),
+                NotificationManager.IMPORTANCE_HIGH
+        );
+
         fusedLocationClient = LocationServices.getFusedLocationProviderClient(this);
 
         locationCallback = new LocationCallback() {
@@ -63,14 +70,15 @@ public class TrackingService extends Service {
         Intent notificationIntent = new Intent(this, MainActivity.class);
         PendingIntent pendingIntent = PendingIntent.getActivity(this, 0, notificationIntent, PendingIntent.FLAG_IMMUTABLE);
 
-        Notification notification = new NotificationCompat.Builder(this, CHANNEL_ID)
-                .setContentTitle("Tracking Service")
-                .setContentText(input)
-                .setSmallIcon(R.drawable.notification_white)
-                .setContentIntent(pendingIntent)
-                .setPriority(NotificationCompat.PRIORITY_MAX)
-                .setOngoing(true)
-                .build();
+        Notification notification = NotificationUtils.buildNotification(
+                this,
+                CHANNEL_ID,
+                getString(R.string.tracking_service_notification_title),
+                input,
+                R.drawable.notification_white,
+                NotificationCompat.PRIORITY_MAX,
+                true
+        );
 
         startForeground(1, notification);
 
@@ -100,20 +108,6 @@ public class TrackingService extends Service {
     @Override
     public IBinder onBind(Intent intent) {
         return null;
-    }
-
-    private void createNotificationChannel() {
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-            NotificationChannel serviceChannel = new NotificationChannel(
-                    CHANNEL_ID,
-                    "Tracking Service Channel",
-                    NotificationManager.IMPORTANCE_HIGH
-            );
-            NotificationManager manager = getSystemService(NotificationManager.class);
-            if (manager != null) {
-                manager.createNotificationChannel(serviceChannel);
-            }
-        }
     }
 
     private void sendLocationBroadcast(double latitude, double longitude, long timestamp) {
