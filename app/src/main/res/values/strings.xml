@@ -9,14 +9,14 @@
     <string name="name2">⚓️ Regina Traber</string>
     <string name="email2">Regina.Traber@ost.ch</string>
     <string name="app_version">App Version</string>
-    <string name="app_version_number">0.1</string>
+    <string name="app_version_number">0.5.0</string>
     <string name="copyright">Copyright</string>
     <string name="all_rights_reserved">© 2024, all rights reserved</string>
     <string name="with_precision">⛵️ Set Sail with Precision: Your ultimate sailing companion app!</string>
     <string name="gps_tracking">📍 GPS-Tracking: Seamlessly track your sailing journey from start to finish.</string>
-    <string name="quick_notes">📝 Quick Notes: Bullet points let you jot down key moments on the go.</string>
-    <string name="ai_enriched_logs">🤖 AI-Enriched Logs: Transform your notes into detailed log entries with AI magic.</string>
-    <string name="edit_anytime">✨ Edit Anytime: Refine your adventures further on our website www.regina_and_andrea_finish_their_masters.com</string>
+    <string name="quick_notes">📝 Quick Notes: Add log entries to your trips.</string>
+    <string name="ai_enriched_logs">🤖 AI-Enriched Logs: Transform your notes into detailed log entries with AI support.</string>
+    <string name="edit_anytime">✨ Edit Anytime: Refine your adventures further on the TripTracker main website.</string>
     <!-- UI interaction -->
     <string name="welcome_to_triptracker_landing">Welcome to TripTracker. To track a trip, click the button:</string>
     <string name="start_tracking">Start tracking</string>
