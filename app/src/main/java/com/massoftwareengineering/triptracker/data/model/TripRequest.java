@@ -1,7 +1,5 @@
 package com.massoftwareengineering.triptracker.data.model;
 
-import com.massoftwareengineering.triptracker.data.model.GPSData;
-
 import java.util.List;
 
 public class TripRequest {
