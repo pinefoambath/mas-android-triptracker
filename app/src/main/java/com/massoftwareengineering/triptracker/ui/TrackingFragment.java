@@ -30,10 +30,9 @@ import androidx.lifecycle.ViewModelProvider;
 import androidx.localbroadcastmanager.content.LocalBroadcastManager;
 
 import com.google.android.gms.location.FusedLocationProviderClient;
-import com.google.android.gms.location.LocationServices;
 import com.massoftwareengineering.triptracker.R;
-import com.massoftwareengineering.triptracker.data.model.GPSData;
 import com.massoftwareengineering.triptracker.data.repository.TripRepository;
+import com.massoftwareengineering.triptracker.data.service.LocationReceiver;
 import com.massoftwareengineering.triptracker.data.service.TrackingService;
 import com.massoftwareengineering.triptracker.utils.NotificationUtils;
 
@@ -48,7 +47,6 @@ public class TrackingFragment extends Fragment {
     private EditText tripNotes;
     private TextView welcomeText, formInstructions;
     private TripViewModel tripViewModel;
-    private FusedLocationProviderClient fusedLocationClient;
     private BroadcastReceiver locationBroadcastReceiver;
 
     @Nullable
@@ -59,7 +57,6 @@ public class TrackingFragment extends Fragment {
         resetForm();
         tripViewModel = new ViewModelProvider(this).get(TripViewModel.class);
         setListeners();
-        fusedLocationClient = LocationServices.getFusedLocationProviderClient(requireContext());
 
         tripViewModel.getIsTracking().observe(getViewLifecycleOwner(), isTracking -> {
             if (isTracking != null && isTracking) {
@@ -69,16 +66,10 @@ public class TrackingFragment extends Fragment {
             }
         });
 
-        locationBroadcastReceiver = new BroadcastReceiver() {
-            @Override
-            public void onReceive(Context context, Intent intent) {
-                double latitude = intent.getDoubleExtra(TrackingService.EXTRA_LATITUDE, 0);
-                double longitude = intent.getDoubleExtra(TrackingService.EXTRA_LONGITUDE, 0);
-                long timestamp = intent.getLongExtra(TrackingService.EXTRA_TIMESTAMP, 0);
-                GPSData gpsData = new GPSData(latitude, longitude, java.time.Instant.ofEpochMilli(timestamp).toString());
-                tripViewModel.addGPSData(gpsData);
-            }
-        };
+        locationBroadcastReceiver = new LocationReceiver(tripViewModel);
+        LocalBroadcastManager.getInstance(requireContext()).registerReceiver(
+                locationBroadcastReceiver, new IntentFilter(TrackingService.ACTION_LOCATION_BROADCAST)
+        );
 
         LocalBroadcastManager.getInstance(requireContext()).registerReceiver(locationBroadcastReceiver,
                 new IntentFilter(TrackingService.ACTION_LOCATION_BROADCAST));
