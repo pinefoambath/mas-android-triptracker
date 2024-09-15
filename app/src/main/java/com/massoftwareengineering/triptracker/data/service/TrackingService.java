@@ -12,27 +12,21 @@ import androidx.annotation.NonNull;
 import androidx.core.app.NotificationCompat;
 import androidx.localbroadcastmanager.content.LocalBroadcastManager;
 
-import com.google.android.gms.location.FusedLocationProviderClient;
 import com.google.android.gms.location.LocationCallback;
-import com.google.android.gms.location.LocationRequest;
 import com.google.android.gms.location.LocationResult;
-import com.google.android.gms.location.LocationServices;
 import com.massoftwareengineering.triptracker.R;
 import com.massoftwareengineering.triptracker.ui.MainActivity;
 import com.massoftwareengineering.triptracker.utils.NotificationUtils;
-import com.massoftwareengineering.triptracker.utils.PermissionUtils;
 
 public class TrackingService extends Service {
 
     private static final String CHANNEL_ID = "TrackingServiceChannel";
-    private static final int LOCATION_UPDATE_INTERVAL = 600000; // 10 minutes
     public static final String ACTION_LOCATION_BROADCAST = "TrackingServiceLocationBroadcast";
     public static final String EXTRA_LATITUDE = "extra_latitude";
     public static final String EXTRA_LONGITUDE = "extra_longitude";
     public static final String EXTRA_TIMESTAMP = "extra_timestamp";
 
-    private FusedLocationProviderClient fusedLocationClient;
-    private LocationCallback locationCallback;
+    private LocationManager locationManager;
 
     @Override
     public void onCreate() {
@@ -46,9 +40,7 @@ public class TrackingService extends Service {
                 NotificationManager.IMPORTANCE_HIGH
         );
 
-        fusedLocationClient = LocationServices.getFusedLocationProviderClient(this);
-
-        locationCallback = new LocationCallback() {
+        locationManager = new LocationManager(this, new LocationCallback() {
             @Override
             public void onLocationResult(@NonNull LocationResult locationResult) {
                 for (Location location : locationResult.getLocations()) {
@@ -58,7 +50,7 @@ public class TrackingService extends Service {
                     sendLocationBroadcast(latitude, longitude, timestamp);
                 }
             }
-        };
+        });
     }
 
     @Override
@@ -79,42 +71,16 @@ public class TrackingService extends Service {
         );
 
         startForeground(1, notification);
-
-        startLocationUpdates();
+        
+        locationManager.startLocationUpdates();
 
         return START_STICKY;
-    }
-
-    private void startLocationUpdates() {
-        if (PermissionUtils.hasLocationPermission(this)) {
-            LocationRequest locationRequest = LocationRequest.create();
-            locationRequest.setInterval(LOCATION_UPDATE_INTERVAL);
-            locationRequest.setPriority(LocationRequest.PRIORITY_HIGH_ACCURACY);
-
-            try {
-                fusedLocationClient.requestLocationUpdates(locationRequest, locationCallback, null);
-            } catch (SecurityException e) {
-                stopSelf();
-            }
-        } else {
-            stopSelf();
-        }
-    }
-
-
-    private void stopLocationUpdates() {
-        fusedLocationClient.removeLocationUpdates(locationCallback);
     }
 
     @Override
     public void onDestroy() {
         super.onDestroy();
-        stopLocationUpdates();
-    }
-
-    @Override
-    public IBinder onBind(Intent intent) {
-        return null;
+        locationManager.stopLocationUpdates();
     }
 
     private void sendLocationBroadcast(double latitude, double longitude, long timestamp) {
@@ -124,4 +90,10 @@ public class TrackingService extends Service {
         intent.putExtra(EXTRA_TIMESTAMP, timestamp);
         LocalBroadcastManager.getInstance(this).sendBroadcast(intent);
     }
+
+    @Override
+    public IBinder onBind(Intent intent) {
+        return null;
+    }
 }
+
