@@ -1,11 +1,9 @@
 package com.massoftwareengineering.triptracker.ui;
 
-import android.Manifest;
 import android.app.Notification;
 import android.content.BroadcastReceiver;
 import android.content.Intent;
 import android.content.IntentFilter;
-import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -21,7 +19,6 @@ import androidx.core.app.NotificationCompat;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
@@ -33,6 +30,7 @@ import com.massoftwareengineering.triptracker.data.service.LocationReceiver;
 import com.massoftwareengineering.triptracker.data.service.TrackingService;
 import com.massoftwareengineering.triptracker.utils.NotificationUtils;
 import com.massoftwareengineering.triptracker.utils.PermissionUtils;
+import com.massoftwareengineering.triptracker.utils.TrackingUiUtils;
 
 public class TrackingFragment extends Fragment {
 
@@ -131,7 +129,6 @@ public class TrackingFragment extends Fragment {
         }
     }
 
-
     private void showTrackingNotification() {
         NotificationUtils.createNotificationChannel(
                 requireContext(),
@@ -206,31 +203,15 @@ public class TrackingFragment extends Fragment {
     }
 
     private void resetForm() {
-        tripNotes.setText("");
-        formInstructions.setVisibility(View.GONE);
-        tripNotes.setVisibility(View.GONE);
-        submitButton.setVisibility(View.GONE);
-        welcomeText.setVisibility(View.VISIBLE);
-        startTrackingButton.setVisibility(View.VISIBLE);
-        startTrackingButton.setText(R.string.start_tracking);
-        startTrackingButton.setBackgroundColor(ContextCompat.getColor(requireContext(), R.color.primaryColor));
-
+        TrackingUiUtils.resetForm(startTrackingButton, tripNotes, welcomeText, formInstructions, submitButton, requireContext());
     }
 
     private void updateUIForTracking() {
-        startTrackingButton.setText(R.string.stop_tracking);
-        startTrackingButton.setBackgroundColor(ContextCompat.getColor(requireContext(), R.color.secondaryColor));
-        welcomeText.setVisibility(View.GONE);
-        formInstructions.setVisibility(View.GONE);
-        tripNotes.setVisibility(View.GONE);
-        submitButton.setVisibility(View.GONE);
+        TrackingUiUtils.updateUIForTracking(startTrackingButton, welcomeText, formInstructions, tripNotes, submitButton, requireContext());
     }
 
     private void updateUIForTrackingStopped() {
-        startTrackingButton.setVisibility(View.GONE);
-        formInstructions.setVisibility(View.VISIBLE);
-        tripNotes.setVisibility(View.VISIBLE);
-        submitButton.setVisibility(View.VISIBLE);
+        TrackingUiUtils.updateUIForTrackingStopped(startTrackingButton, formInstructions, tripNotes, submitButton);
     }
 
     private void showToast(String message) {
@@ -253,12 +234,6 @@ public class TrackingFragment extends Fragment {
             if (!PermissionUtils.isPermissionGranted(grantResults)) {
                 showToast("Notifications are required for tracking.");
             }
-        }
-    }
-
-    private void requestNotificationPermission() {
-        if (ContextCompat.checkSelfPermission(requireContext(), Manifest.permission.POST_NOTIFICATIONS) != PackageManager.PERMISSION_GRANTED) {
-            ActivityCompat.requestPermissions(requireActivity(), new String[]{Manifest.permission.POST_NOTIFICATIONS}, NOTIFICATION_PERMISSION_REQUEST_CODE);
         }
     }
 }
