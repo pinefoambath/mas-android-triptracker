@@ -3,30 +3,49 @@
 
 TripTracker is the Android Component of the MAS Software Engineering Master Thesis by Regina and Andrea.
 
-TripTracker is an advanced GPS tracking application tailored for sailors and marine adventurers. It enables users to initiate sailing trips, record their GPS coordinates, and send this data to a backend for AI-enhanced sailing-report ad track logging and storage. Designed to bring maritime logging into the 21st century, TripTracker leverages Android 13's capabilities to provide a reliable and user-friendly experience for sailors navigating open waters.
+TripTracker is a GPS tracking application tailored for sailors and marine adventurers. It enables users to initiate sailing trips, record their GPS coordinates, and send this data to a backend for AI-enhanced sailing-report ad track logging and storage. Designed to bring maritime logging into the 21st century, TripTracker leverages Android 13's capabilities to provide a reliable and user-friendly experience for sailors, meaning more time for them to enjoy their hobby and less time doing log keeping and manually gathering data. 
 
 ## Features
 
 - Start Sailing Trips: Easily mark the beginning of your sailing adventures directly from your Android phone.
-- Real-Time GPS Tracking: Record your location with accurate, real-time GPS monitoring.
-- GPS Data Transmission: Effortlessly send your location data to a backend API for storage.
-- AI enhanced sailing report logging: Use AI to create fully-fledged log entries from just a few bullet pointed word.
-- Robust Design: Utilizes Android 13's latest features for improved performance, battery efficiency, and user privacy.
+- Real-Time GPS Tracking: Record your location with real-time GPS monitoring.
+- GPS Data Transmission: Send your location data to a backend API for storage.
+- AI enhanced sailing report logging: Use AI to create comprehensive log entries from just a few bullet pointed word.
 
-## Getting Started
+## Developers: getting started
 
 ### Prerequisites
-Android Studio Chipmunk | 2021.2.1 Patch 2 or later
-Minimum SDK version: Android 13 (API level 33)
+- Download Android Studio from here https://developer.android.com/studio 
+- Install the components needed to work on this project. Select the "SDK Manager" menu. Select a minimum SDK version of Android 13 (API level 33).
+- In the section "SDK Platforms" select the following tools and click on "apply" to install them:
+  - Android SDK Build-Tools 33
+  - Android Emulator
+  - Android SDK-Platform-Tools
+  - Android SDK Tools
+  - Google USB Driver (so that you can run the app locally on your own Android phone)
+  - Intel x86 Emulator Accelerator
 
 ### Local Development
-- Clone the Repository
-- Open the Project in Android Studio
-
-### Run the Application locally
-Build the project in Android Studio and run the app on an emulator or physical device with Android 13 or above.
+- Clone this repository
+- Open the repository in Android Studio
+- You will probably want to use both an emulated (simulated) phone, as well a physical Android phone. To get both going:
+  - Emulator: in the Android SDK menu, click on "Create Virtual Device". Create a "Pixel 4a" with an API of 33. This is the minimum hardware and software that this app will run on.
+  - Your own physical Android device: 
+    - Go To Settings > About phone.
+    - Tap "Build Number" 7 times to enable Developer Mode.
+    - Return to Settings and find "Developer Options".
+    - In "Developer Options", toggle on USB Debugging.
+    - Connect your computer and phone with a USB cable.
+    - Allow USB Debugging on your phone when prompted. 
+    - Run the app: in Android Studio, select your device from the "device dropdown" and click Run to start the app on your phone.
 
 ## Usage
 - Starting a Trip: Open the app and use the 'Start Trip' button to begin tracking your journey.
-- Sending Data: Use the 'Send Data' feature to transmit your trip information at the end of your trip.
+- Click the "Stop Trip" button when finished.
+- Add a trip note. 
+- Click "Submit Trip". 
+
+## Rights
+All usage and copyright rights reserved by the original developers Regina and Andrea. 
+
 
