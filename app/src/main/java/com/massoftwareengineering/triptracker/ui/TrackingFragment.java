@@ -32,6 +32,7 @@ import com.massoftwareengineering.triptracker.data.repository.TripRepository;
 import com.massoftwareengineering.triptracker.data.service.LocationReceiver;
 import com.massoftwareengineering.triptracker.data.service.TrackingService;
 import com.massoftwareengineering.triptracker.utils.NotificationUtils;
+import com.massoftwareengineering.triptracker.utils.PermissionUtils;
 
 public class TrackingFragment extends Fragment {
 
@@ -117,21 +118,19 @@ public class TrackingFragment extends Fragment {
     }
 
     private void startTracking() {
-        requestNotificationPermission();
+        if (!PermissionUtils.hasNotificationPermission(requireContext())) {
+            PermissionUtils.requestNotificationPermission(requireActivity(), NOTIFICATION_PERMISSION_REQUEST_CODE);
+        }
 
-        if (ContextCompat.checkSelfPermission(requireContext(), Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED ||
-                ContextCompat.checkSelfPermission(requireContext(), Manifest.permission.FOREGROUND_SERVICE) != PackageManager.PERMISSION_GRANTED) {
-            ActivityCompat.requestPermissions(requireActivity(), new String[]{
-                    Manifest.permission.ACCESS_FINE_LOCATION,
-                    Manifest.permission.FOREGROUND_SERVICE,
-                    Manifest.permission.ACCESS_COARSE_LOCATION
-            }, LOCATION_PERMISSION_REQUEST_CODE);
+        if (!PermissionUtils.hasLocationPermission(requireContext())) {
+            PermissionUtils.requestLocationPermission(requireActivity(), LOCATION_PERMISSION_REQUEST_CODE);
         } else {
             tripViewModel.startTracking();
             startTrackingService();
             showTrackingNotification();
         }
     }
+
 
     private void showTrackingNotification() {
         NotificationUtils.createNotificationChannel(
@@ -243,7 +242,7 @@ public class TrackingFragment extends Fragment {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
 
         if (requestCode == LOCATION_PERMISSION_REQUEST_CODE) {
-            if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+            if (PermissionUtils.isPermissionGranted(grantResults)) {
                 startTracking();
             } else {
                 showToast(getString(R.string.permission_denied));
@@ -251,7 +250,7 @@ public class TrackingFragment extends Fragment {
         }
 
         if (requestCode == NOTIFICATION_PERMISSION_REQUEST_CODE) {
-            if (grantResults.length > 0 && grantResults[0] != PackageManager.PERMISSION_GRANTED) {
+            if (!PermissionUtils.isPermissionGranted(grantResults)) {
                 showToast("Notifications are required for tracking.");
             }
         }

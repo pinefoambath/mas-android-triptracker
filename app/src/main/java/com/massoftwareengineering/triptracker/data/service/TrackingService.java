@@ -1,18 +1,15 @@
 package com.massoftwareengineering.triptracker.data.service;
 
-import android.Manifest;
 import android.app.Notification;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.app.Service;
 import android.content.Intent;
-import android.content.pm.PackageManager;
 import android.location.Location;
 import android.os.IBinder;
 
 import androidx.annotation.NonNull;
 import androidx.core.app.NotificationCompat;
-import androidx.core.content.ContextCompat;
 import androidx.localbroadcastmanager.content.LocalBroadcastManager;
 
 import com.google.android.gms.location.FusedLocationProviderClient;
@@ -23,6 +20,7 @@ import com.google.android.gms.location.LocationServices;
 import com.massoftwareengineering.triptracker.R;
 import com.massoftwareengineering.triptracker.ui.MainActivity;
 import com.massoftwareengineering.triptracker.utils.NotificationUtils;
+import com.massoftwareengineering.triptracker.utils.PermissionUtils;
 
 public class TrackingService extends Service {
 
@@ -88,9 +86,7 @@ public class TrackingService extends Service {
     }
 
     private void startLocationUpdates() {
-        if (ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED &&
-                ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
-
+        if (PermissionUtils.hasLocationPermission(this)) {
             LocationRequest locationRequest = LocationRequest.create();
             locationRequest.setInterval(LOCATION_UPDATE_INTERVAL);
             locationRequest.setPriority(LocationRequest.PRIORITY_HIGH_ACCURACY);
@@ -104,6 +100,7 @@ public class TrackingService extends Service {
             stopSelf();
         }
     }
+
 
     private void stopLocationUpdates() {
         fusedLocationClient.removeLocationUpdates(locationCallback);
