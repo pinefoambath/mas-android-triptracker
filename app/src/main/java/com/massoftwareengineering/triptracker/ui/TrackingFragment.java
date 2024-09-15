@@ -3,11 +3,9 @@ package com.massoftwareengineering.triptracker.ui;
 import android.Manifest;
 import android.app.Notification;
 import android.content.BroadcastReceiver;
-import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.pm.PackageManager;
-import android.os.Build;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -29,7 +27,6 @@ import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.localbroadcastmanager.content.LocalBroadcastManager;
 
-import com.google.android.gms.location.FusedLocationProviderClient;
 import com.massoftwareengineering.triptracker.R;
 import com.massoftwareengineering.triptracker.data.repository.TripRepository;
 import com.massoftwareengineering.triptracker.data.service.LocationReceiver;
@@ -155,10 +152,7 @@ public class TrackingFragment extends Fragment {
                 true
         );
 
-        NotificationManager notificationManager = (NotificationManager) requireContext().getSystemService(Context.NOTIFICATION_SERVICE);
-        if (notificationManager != null) {
-            notificationManager.notify(TRACKING_NOTIFICATION_ID, notification);
-        }
+        NotificationUtils.showNotification(requireContext(), TRACKING_NOTIFICATION_ID, notification);
     }
 
     private void stopTracking() {
@@ -169,10 +163,7 @@ public class TrackingFragment extends Fragment {
     }
 
     private void cancelTrackingNotification() {
-        NotificationManager notificationManager = (NotificationManager) requireContext().getSystemService(Context.NOTIFICATION_SERVICE);
-        if (notificationManager != null) {
-            notificationManager.cancel(TRACKING_NOTIFICATION_ID);
-        }
+        NotificationUtils.cancelNotification(requireContext(), TRACKING_NOTIFICATION_ID);
     }
 
     private void startTrackingService() {
