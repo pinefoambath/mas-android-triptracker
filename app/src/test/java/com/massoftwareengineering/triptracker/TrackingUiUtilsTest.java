@@ -72,13 +72,12 @@ public class TrackingUiUtilsTest {
 
     @Test
     public void testUpdateUIForTrackingStopped() {
-        TrackingUiUtils.updateUIForTrackingStopped(startTrackingButton, formInstructions, tripNotes, submitButton);
-        
+        TrackingUiUtils.updateUIForTrackingStopped(startTrackingButton, welcomeText, formInstructions, tripNotes, submitButton);
+
         verify(startTrackingButton).setVisibility(View.GONE);
+        verify(welcomeText).setVisibility(View.GONE);
         verify(formInstructions).setVisibility(View.VISIBLE);
         verify(tripNotes).setVisibility(View.VISIBLE);
         verify(submitButton).setVisibility(View.VISIBLE);
     }
 }
-
-

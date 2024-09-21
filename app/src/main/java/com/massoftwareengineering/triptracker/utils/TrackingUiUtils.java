@@ -32,8 +32,9 @@ public class TrackingUiUtils {
         submitButton.setVisibility(View.GONE);
     }
 
-    public static void updateUIForTrackingStopped(Button startTrackingButton, TextView formInstructions, EditText tripNotes, Button submitButton) {
+    public static void updateUIForTrackingStopped(Button startTrackingButton, TextView welcomeText, TextView formInstructions, EditText tripNotes, Button submitButton) {
         startTrackingButton.setVisibility(View.GONE);
+        welcomeText.setVisibility(View.GONE);
         formInstructions.setVisibility(View.VISIBLE);
         tripNotes.setVisibility(View.VISIBLE);
         submitButton.setVisibility(View.VISIBLE);

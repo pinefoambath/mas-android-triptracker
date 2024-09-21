@@ -38,7 +38,6 @@ public class TrackingFragment extends Fragment {
     private static final int NOTIFICATION_PERMISSION_REQUEST_CODE = 2;
     private static final int TRACKING_NOTIFICATION_ID = 1001;
     private static final String CHANNEL_ID = "TrackingNotificationChannel";
-
     private Button startTrackingButton, submitButton;
     private EditText tripNotes;
     private TextView welcomeText, formInstructions;
@@ -211,8 +210,9 @@ public class TrackingFragment extends Fragment {
     }
 
     private void updateUIForTrackingStopped() {
-        TrackingUiUtils.updateUIForTrackingStopped(startTrackingButton, formInstructions, tripNotes, submitButton);
+        TrackingUiUtils.updateUIForTrackingStopped(startTrackingButton, welcomeText, formInstructions, tripNotes, submitButton);
     }
+    
 
     private void showToast(String message) {
         Toast.makeText(requireContext(), message, Toast.LENGTH_SHORT).show();
