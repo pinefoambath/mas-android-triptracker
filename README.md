@@ -49,6 +49,11 @@ If you simply want to use the app, without creating a full developer environment
 - Add a trip note. 
 - Click "Submit Trip". 
 
+## Related repositories:
+
+- Web-Application: https://github.com/ReginaTraber/mas-web-tripmanager 
+- Project Wiki: https://github.com/pinefoambath/mas-documentation-triptracker 
+
 ## Rights
 All usage and copyright rights reserved by the original developers Regina and Andrea. 
 
