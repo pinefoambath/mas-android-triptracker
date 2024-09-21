@@ -30,4 +30,18 @@ public class NotificationUtils {
                 .setAutoCancel(autoCancel)
                 .build();
     }
+    
+    public static void showNotification(Context context, int notificationId, Notification notification) {
+        NotificationManager notificationManager = (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
+        if (notificationManager != null) {
+            notificationManager.notify(notificationId, notification);
+        }
+    }
+
+    public static void cancelNotification(Context context, int notificationId) {
+        NotificationManager notificationManager = (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
+        if (notificationManager != null) {
+            notificationManager.cancel(notificationId);
+        }
+    }
 }

@@ -50,6 +50,7 @@ dependencies {
     androidTestImplementation("androidx.test:rules:1.4.0")
     androidTestImplementation("androidx.test:core:1.5.0")
     androidTestImplementation("org.mockito:mockito-android:4.11.0")
+    androidTestImplementation("androidx.test.uiautomator:uiautomator:2.2.0")
 }
 
 

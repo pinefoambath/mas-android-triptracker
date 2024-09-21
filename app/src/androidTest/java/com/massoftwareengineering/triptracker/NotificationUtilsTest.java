@@ -71,4 +71,37 @@ public class NotificationUtilsTest {
         assertEquals("Test Notification Content", notification.extras.getString(Notification.EXTRA_TEXT));
         assertEquals(Notification.PRIORITY_HIGH, notification.priority);
     }
+
+    public void testShowNotification() {
+        Notification notification = NotificationUtils.buildNotification(
+                context,
+                "test_channel_id",
+                "Test Show Notification",
+                "This notification should be shown",
+                android.R.drawable.ic_dialog_info,
+                Notification.PRIORITY_HIGH,
+                true
+        );
+
+        NotificationUtils.showNotification(context, 1001, notification);
+        assertNotNull(notificationManager);
+    }
+
+    public void testCancelNotification() {
+        Notification notification = NotificationUtils.buildNotification(
+                context,
+                "test_channel_id",
+                "Test Cancel Notification",
+                "This notification will be canceled",
+                android.R.drawable.ic_dialog_info,
+                Notification.PRIORITY_HIGH,
+                true
+        );
+
+        NotificationUtils.showNotification(context, 1002, notification);
+        NotificationUtils.cancelNotification(context, 1002);
+
+        assertNotNull(notificationManager);
+    }
+
 }
