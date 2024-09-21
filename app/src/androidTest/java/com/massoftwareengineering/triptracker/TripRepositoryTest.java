@@ -57,7 +57,6 @@ public class TripRepositoryTest {
         }).when(mockCall).enqueue(any());
 
         tripRepository.submitTrip("Test notes", dummyGpsData, mockCallback);
-        // Verify we're returning the onSuccess callback when we had a success response
         verify(mockCallback).onSuccess();
     }
 
@@ -72,7 +71,6 @@ public class TripRepositoryTest {
         }).when(mockCall).enqueue(any());
 
         tripRepository.submitTrip("Test notes", dummyGpsData, mockCallback);
-        // Verify we're returning the onError callback when we had an error response
         verify(mockCallback).onError(eq(400), anyString());
     }
 
@@ -86,7 +84,6 @@ public class TripRepositoryTest {
         }).when(mockCall).enqueue(any());
 
         tripRepository.submitTrip("Test notes", dummyGpsData, mockCallback);
-        // Verify we're returning the onError callback with a Throwable for the network error
         verify(mockCallback).onError(any(Throwable.class));
     }
 }

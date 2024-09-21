@@ -17,8 +17,7 @@ public class TripRepository {
     public TripRepository() {
         tripService = RetrofitClient.getTripService();
     }
-
-    // Constructor for testing
+    
     public TripRepository(TripService tripService) {
         this.tripService = tripService;
     }
