@@ -3,16 +3,16 @@
 
 TripTracker is the Android Component of the MAS Software Engineering Master Thesis by Regina and Andrea.
 
-TripTracker is a GPS tracking application tailored for sailors and marine adventurers. It enables users to initiate sailing trips, record their GPS coordinates, and send this data to a backend for AI-enhanced sailing-report ad track logging and storage. Designed to bring maritime logging into the 21st century, TripTracker leverages Android 13's capabilities to provide a reliable and user-friendly experience for sailors, meaning more time for them to enjoy their hobby and less time doing log keeping and manually gathering data. 
+TripTracker is a GPS tracking application tailored for sailors and marine adventurers. It enables users to initiate sailing trips, record their GPS coordinates, and send this data to a backend for AI-enhanced sailing-report and track logging. Designed to bring maritime logging into the 21st century, TripTracker leverages Android 13's capabilities to provide a reliable and user-friendly trip recording, meaning more time for sailors to enjoy their hobby and less time doing log keeping and manually gathering trip data. 
 
 ## Features
 
 - Start Sailing Trips: Easily mark the beginning of your sailing adventures directly from your Android phone.
-- Real-Time GPS Tracking: Record your location with real-time GPS monitoring.
+- Real-Time GPS Recording: Record your location with real-time GPS monitoring.
 - GPS Data Transmission: Send your location data to a backend API for storage.
-- AI enhanced sailing report logging: Use AI to create comprehensive log entries from just a few bullet pointed word.
+- AI enhanced sailing report logging: Use AI to create comprehensive log entries from just a few bullet pointed words
 
-## Developers: getting started
+## Developers: getting started with the code
 
 ### Prerequisites
 - Download Android Studio from here https://developer.android.com/studio 
@@ -38,6 +38,10 @@ TripTracker is a GPS tracking application tailored for sailors and marine advent
     - Connect your computer and phone with a USB cable.
     - Allow USB Debugging on your phone when prompted. 
     - Run the app: in Android Studio, select your device from the "device dropdown" and click Run to start the app on your phone.
+
+## Developers: using the app directly
+
+If you simply want to use the app, without creating a full developer environment: a signed APK is available in app/release folder. Simply transfer the file "app-release.apk" in here to your Android phone. You are now able to use the app on your phone, without going via Android Studio.
 
 ## Usage
 - Starting a Trip: Open the app and use the 'Start Trip' button to begin tracking your journey.
