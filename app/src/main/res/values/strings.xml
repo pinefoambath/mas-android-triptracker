@@ -33,6 +33,7 @@
     <string name="trip_finished">Tracking stopped</string>
     <string name="fill_in_trip_details">Add notes to your trip:</string>
     <string name="submit_trip">Submit trip</string>
+    <string name="submitting">Submitting ...</string>
     <string name="trip_submitted">Trip submitted</string>
     <string name="action_about">About us</string>
     <string name="enter_notes">Please enter some notes</string>

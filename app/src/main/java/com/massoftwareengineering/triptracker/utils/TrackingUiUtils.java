@@ -39,6 +39,16 @@ public class TrackingUiUtils {
         tripNotes.setVisibility(View.VISIBLE);
         submitButton.setVisibility(View.VISIBLE);
     }
+
+    public static void disableSubmitButton(Button submitButton) {
+        submitButton.setEnabled(false);
+        submitButton.setText(R.string.submitting);
+    }
+
+    public static void enableSubmitButton(Button submitButton) {
+        submitButton.setEnabled(true);
+        submitButton.setText(R.string.submit_trip);
+    }
 }
 
 

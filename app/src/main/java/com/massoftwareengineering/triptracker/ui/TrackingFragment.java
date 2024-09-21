@@ -179,27 +179,37 @@ public class TrackingFragment extends Fragment {
             return;
         }
 
+        TrackingUiUtils.disableSubmitButton(submitButton);
+
         tripViewModel.submitTrip(notes, new TripRepository.TripCallback() {
             @Override
             public void onSuccess() {
                 tripViewModel.clearGPSData();
                 resetForm();
+
+                TrackingUiUtils.enableSubmitButton(submitButton);
+
                 showToast(getString(R.string.trip_submitted));
             }
 
             @Override
             public void onError(int code, String message) {
+                TrackingUiUtils.enableSubmitButton(submitButton);
+
                 String errorMessage = getString(R.string.submit_failed, code, message);
                 showToast(errorMessage);
             }
 
             @Override
             public void onError(Throwable t) {
+                TrackingUiUtils.enableSubmitButton(submitButton);
+
                 String errorMessage = getString(R.string.error_occurred, t.getMessage());
                 showToast(errorMessage);
             }
         });
     }
+
 
     private void resetForm() {
         TrackingUiUtils.resetForm(startTrackingButton, tripNotes, welcomeText, formInstructions, submitButton, requireContext());
@@ -212,7 +222,7 @@ public class TrackingFragment extends Fragment {
     private void updateUIForTrackingStopped() {
         TrackingUiUtils.updateUIForTrackingStopped(startTrackingButton, welcomeText, formInstructions, tripNotes, submitButton);
     }
-    
+
 
     private void showToast(String message) {
         Toast.makeText(requireContext(), message, Toast.LENGTH_SHORT).show();
