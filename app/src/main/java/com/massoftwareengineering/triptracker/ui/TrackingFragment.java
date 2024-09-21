@@ -77,14 +77,15 @@ public class TrackingFragment extends Fragment {
         super.onResume();
 
         Boolean isTracking = tripViewModel.getIsTracking().getValue();
-        if (!tripViewModel.hasGPSData()) {
-            resetForm();
-        } else if (Boolean.TRUE.equals(isTracking)) {
+        if (Boolean.TRUE.equals(isTracking)) {
             updateUIForTracking();
-        } else {
+        } else if (tripViewModel.hasGPSData()) {
             updateUIForTrackingStopped();
+        } else {
+            resetForm();
         }
     }
+
 
     @Override
     public void onDestroyView() {
