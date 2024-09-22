@@ -30,8 +30,12 @@ jobs:
     - name: Start emulator
       uses: reactivecircus/android-emulator-runner@v2
       with:
-        api-level: 30
+        api-level: 29
+        target: google_apis
+        arch: x86
+        disable-linux-hw-accel: true
         script: ./gradlew connectedAndroidTest
 
-    - name: Run UI tests (instrumentation tests)
-      run: ./gradlew connectedAndroidTest
+    - name: Dump emulator logs
+      run: adb -s emulator-5554 logcat
+
