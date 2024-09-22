@@ -9,15 +9,20 @@ import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 
 public class RetrofitClient {
-    private static Retrofit retrofit;
+
     private static final String BASE_URL = "https://tripmanager.azurewebsites.net/";
+    private static final long CONNECT_TIMEOUT_SECONDS = 60L;
+    private static final long READ_TIMEOUT_SECONDS = 60L;
+    private static final long WRITE_TIMEOUT_SECONDS = 60L;
+
+    private static Retrofit retrofit;
 
     public static Retrofit getRetrofitInstance() {
         if (retrofit == null) {
             OkHttpClient okHttpClient = new OkHttpClient.Builder()
-                    .connectTimeout(60, TimeUnit.SECONDS)
-                    .readTimeout(60, TimeUnit.SECONDS)
-                    .writeTimeout(60, TimeUnit.SECONDS)
+                    .connectTimeout(CONNECT_TIMEOUT_SECONDS, TimeUnit.SECONDS)
+                    .readTimeout(READ_TIMEOUT_SECONDS, TimeUnit.SECONDS)
+                    .writeTimeout(WRITE_TIMEOUT_SECONDS, TimeUnit.SECONDS)
                     .build();
 
             retrofit = new Retrofit.Builder()
