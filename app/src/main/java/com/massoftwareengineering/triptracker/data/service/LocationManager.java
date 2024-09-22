@@ -1,9 +1,6 @@
 package com.massoftwareengineering.triptracker.data.service;
 
 import android.content.Context;
-import android.location.Location;
-
-import androidx.annotation.NonNull;
 
 import com.google.android.gms.location.FusedLocationProviderClient;
 import com.google.android.gms.location.LocationCallback;

@@ -32,11 +32,22 @@ public class TrackingUiUtils {
         submitButton.setVisibility(View.GONE);
     }
 
-    public static void updateUIForTrackingStopped(Button startTrackingButton, TextView formInstructions, EditText tripNotes, Button submitButton) {
+    public static void updateUIForTrackingStopped(Button startTrackingButton, TextView welcomeText, TextView formInstructions, EditText tripNotes, Button submitButton) {
         startTrackingButton.setVisibility(View.GONE);
+        welcomeText.setVisibility(View.GONE);
         formInstructions.setVisibility(View.VISIBLE);
         tripNotes.setVisibility(View.VISIBLE);
         submitButton.setVisibility(View.VISIBLE);
+    }
+
+    public static void disableSubmitButton(Button submitButton) {
+        submitButton.setEnabled(false);
+        submitButton.setText(R.string.submitting);
+    }
+
+    public static void enableSubmitButton(Button submitButton) {
+        submitButton.setEnabled(true);
+        submitButton.setText(R.string.submit_trip);
     }
 }
 

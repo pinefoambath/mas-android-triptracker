@@ -25,7 +25,6 @@ public class TrackingService extends Service {
     public static final String EXTRA_LATITUDE = "extra_latitude";
     public static final String EXTRA_LONGITUDE = "extra_longitude";
     public static final String EXTRA_TIMESTAMP = "extra_timestamp";
-
     private LocationManager locationManager;
 
     @Override
@@ -71,7 +70,7 @@ public class TrackingService extends Service {
         );
 
         startForeground(1, notification);
-        
+
         locationManager.startLocationUpdates();
 
         return START_STICKY;

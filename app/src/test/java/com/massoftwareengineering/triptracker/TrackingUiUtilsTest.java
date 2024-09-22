@@ -72,13 +72,28 @@ public class TrackingUiUtilsTest {
 
     @Test
     public void testUpdateUIForTrackingStopped() {
-        TrackingUiUtils.updateUIForTrackingStopped(startTrackingButton, formInstructions, tripNotes, submitButton);
-        
+        TrackingUiUtils.updateUIForTrackingStopped(startTrackingButton, welcomeText, formInstructions, tripNotes, submitButton);
+
         verify(startTrackingButton).setVisibility(View.GONE);
+        verify(welcomeText).setVisibility(View.GONE);
         verify(formInstructions).setVisibility(View.VISIBLE);
         verify(tripNotes).setVisibility(View.VISIBLE);
         verify(submitButton).setVisibility(View.VISIBLE);
     }
+
+    @Test
+    public void testDisableSubmitButton() {
+        TrackingUiUtils.disableSubmitButton(submitButton);
+
+        verify(submitButton).setEnabled(false);
+        verify(submitButton).setText(R.string.submitting);
+    }
+
+    @Test
+    public void testEnableSubmitButton() {
+        TrackingUiUtils.enableSubmitButton(submitButton);
+
+        verify(submitButton).setEnabled(true);
+        verify(submitButton).setText(R.string.submit_trip);
+    }
 }
-
-
