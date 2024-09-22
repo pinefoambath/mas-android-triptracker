@@ -41,7 +41,7 @@ TripTracker is a GPS tracking application tailored for sailors and marine advent
 
 ## Developers: using the app directly
 
-If you simply want to use the app, without creating a full developer environment: a signed APK is available in app/release folder. Simply transfer the file "app-release.apk" in here to your Android phone. You are now able to use the app on your phone, without going via Android Studio.
+If you simply want to use the app, without creating a full developer environment: a signed APK is available in app/release folder. Simply transfer the apk-file from in there to your Android phone. You are now able to use the app on your phone, without having to start Android Studio.
 
 ## Usage
 - Starting a Trip: Open the app and use the 'Start Trip' button to begin tracking your journey.
