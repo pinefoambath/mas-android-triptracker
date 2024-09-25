@@ -21,7 +21,7 @@ import static androidx.test.platform.app.InstrumentationRegistry.getInstrumentat
 import static org.junit.Assert.assertTrue;
 
 @RunWith(AndroidJUnit4.class)
-public class PermissionUtilsAutomatedTest {
+public class PermissionUtilsTest {
 
     @Rule
     public ActivityScenarioRule<MainActivity> activityRule = new ActivityScenarioRule<>(MainActivity.class);
@@ -37,6 +37,10 @@ public class PermissionUtilsAutomatedTest {
 
     @Test
     public void testRequestLocationPermission() throws Exception {
+        // Interacting with system permission dialogs using UiAutomator can be unreliable due to variations
+        // in system UI across different devices and Android versions. If this test fails to grant permissions
+        // automatically, please manually grant the location permissions on the emulator or device as you run
+        // the test to ensure it passes successfully.
         boolean hasPermission = PermissionUtils.hasLocationPermission(context);
         if (!hasPermission) {
             activityRule.getScenario().onActivity(activity ->
