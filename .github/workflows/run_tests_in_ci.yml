@@ -20,5 +20,35 @@ jobs:
     - name: Build Debug APK
       run: ./gradlew assembleDebug
 
-    - name: Run tests
+    - name: Run unit tests
       run: ./gradlew test
+
+    - name: Setup Android SDK
+      uses: android-actions/setup-android@v4
+
+    - name: Create AVD and start emulator
+      uses: reactivecircus/android-emulator-runner@v2
+      with:
+        api-level: 33
+        arch: x86_64
+        target: default 
+        emulator-options: -no-window -noaudio -no-boot-anim -accel on -gpu swiftshader_indirect -skin 1080x1920
+        disable-animations: false
+        force-avd-creation: false
+        emulator-build: 7425822 
+        wait-for-boot: true
+        startup-timeout: 120s 
+
+    - name: Run instrumented tests
+      uses: reactivecircus/android-emulator-runner@v2
+      with:
+        api-level: 33
+        arch: x86_64
+        target: default
+        emulator-options: -no-window -noaudio -no-boot-anim -accel on -gpu swiftshader_indirect -skin 1080x1920
+        disable-animations: true
+        force-avd-creation: false
+        emulator-build: 7425822
+        wait-for-boot: false
+        startup-timeout: 30s
+        command: ./gradlew connectedCheck
