@@ -2,7 +2,6 @@ package com.massoftwareengineering.triptracker;
 
 import android.content.Context;
 import android.os.Build;
-import android.os.Process;
 
 import androidx.test.core.app.ApplicationProvider;
 import androidx.test.ext.junit.rules.ActivityScenarioRule;
@@ -40,7 +39,7 @@ public class PermissionUtilsTest {
     }
 
     @Test
-    public void testLocationPermissionRequestAndGrant() throws Exception {
+    public void testLocationPermissionRequestAndGrant() throws InterruptedException {
         revokePermissions(new String[]{
                 android.Manifest.permission.ACCESS_FINE_LOCATION,
                 android.Manifest.permission.ACCESS_COARSE_LOCATION
@@ -58,7 +57,7 @@ public class PermissionUtilsTest {
         assertTrue("Location permission should be granted", PermissionUtils.hasLocationPermission(context));
     }
 
-    private void revokePermissions(String[] permissions) throws Exception {
+    private void revokePermissions(String[] permissions) throws InterruptedException {
         String packageName = context.getPackageName();
         for (String permission : permissions) {
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
@@ -70,7 +69,7 @@ public class PermissionUtilsTest {
         Thread.sleep(1000);
     }
 
-    private void grantPermissionThroughUi(String buttonText) throws Exception {
+    private void grantPermissionThroughUi(String buttonText) {
         device.wait(Until.hasObject(By.text(buttonText)), 5000);
 
         if (device.hasObject(By.text(buttonText))) {
@@ -85,5 +84,3 @@ public class PermissionUtilsTest {
         }
     }
 }
-
-
