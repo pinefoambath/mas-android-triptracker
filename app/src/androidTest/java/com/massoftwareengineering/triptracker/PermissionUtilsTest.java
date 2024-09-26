@@ -1,11 +1,12 @@
 package com.massoftwareengineering.triptracker;
 
 import android.content.Context;
+import android.os.Build;
+import android.os.Process;
 
 import androidx.test.core.app.ApplicationProvider;
 import androidx.test.ext.junit.rules.ActivityScenarioRule;
 import androidx.test.ext.junit.runners.AndroidJUnit4;
-import androidx.test.uiautomator.By;
 import androidx.test.uiautomator.UiDevice;
 import androidx.test.uiautomator.Until;
 
@@ -18,7 +19,10 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 
 import static androidx.test.platform.app.InstrumentationRegistry.getInstrumentation;
+import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
+
+import androidx.test.uiautomator.By;
 
 @RunWith(AndroidJUnit4.class)
 public class PermissionUtilsTest {
@@ -36,31 +40,50 @@ public class PermissionUtilsTest {
     }
 
     @Test
-    public void testRequestLocationPermission() throws Exception {
-        // Interacting with system permission dialogs using UiAutomator can be unreliable due to variations
-        // in system UI across different devices and Android versions. If this test fails to grant permissions
-        // automatically, please manually grant the location permissions on the emulator or device as you run
-        // the test to ensure it passes successfully.
-        boolean hasPermission = PermissionUtils.hasLocationPermission(context);
-        if (!hasPermission) {
-            activityRule.getScenario().onActivity(activity ->
-                    PermissionUtils.requestLocationPermission(activity, 100)
-            );
+    public void testLocationPermissionRequestAndGrant() throws Exception {
+        revokePermissions(new String[]{
+                android.Manifest.permission.ACCESS_FINE_LOCATION,
+                android.Manifest.permission.ACCESS_COARSE_LOCATION
+        });
 
-            device.wait(Until.hasObject(By.text("Allow")), 5000);
+        assertFalse("Location permission should not be granted initially", PermissionUtils.hasLocationPermission(context));
+        activityRule.getScenario().onActivity(activity ->
+                PermissionUtils.requestLocationPermission(activity, 100)
+        );
 
-            if (device.hasObject(By.text("Allow"))) {
-                device.findObject(By.text("Allow")).click();
+        grantPermissionThroughUi("While using the app");
+
+        Thread.sleep(2000);
+
+        assertTrue("Location permission should be granted", PermissionUtils.hasLocationPermission(context));
+    }
+
+    private void revokePermissions(String[] permissions) throws Exception {
+        String packageName = context.getPackageName();
+        for (String permission : permissions) {
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+                getInstrumentation().getUiAutomation().revokeRuntimePermission(packageName, permission);
             } else {
-                System.out.println("Permission dialog did not appear or 'Allow' button not found.");
+                System.out.println("Cannot revoke permissions on SDK versions below 23");
             }
+        }
+        Thread.sleep(1000);
+    }
 
-            Thread.sleep(3000);
+    private void grantPermissionThroughUi(String buttonText) throws Exception {
+        device.wait(Until.hasObject(By.text(buttonText)), 5000);
 
-            assertTrue("Location permission should be granted", PermissionUtils.hasLocationPermission(context));
+        if (device.hasObject(By.text(buttonText))) {
+            device.findObject(By.text(buttonText)).click();
+        } else {
+            device.wait(Until.hasObject(By.res("android:id/button1")), 5000);
+            if (device.hasObject(By.res("android:id/button1"))) {
+                device.findObject(By.res("android:id/button1")).click();
+            } else {
+                System.out.println("Permission dialog did not appear or button not found.");
+            }
         }
     }
 }
-
 
 
